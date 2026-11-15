@@ -1,0 +1,84 @@
+Goal: test H2. Does the spatial distribution of the indices on the wall add information beyond the regional means $\mathbf{Hd}$?
+
+\section{Point-based representation}
+\begin{itemize}
+    \item Input: $N = 4096$ wall points per patient, sampled by area, aligned on the centerline.
+    \item Per point: coordinates and $\mathbf{q} = (\log\mathrm{TAWSS}, \mathrm{OSI}, \log\mathrm{RRT})$, standardised.
+\end{itemize}
+\begin{equation}
+    \mathcal{P}_i = \left\{ \left(\mathbf{x}_{ij},\, \mathbf{q}_{ij}\right) \right\}_{j=1}^{N}
+\end{equation}
+
+\section{Geometry-conditioned autoencoder}
+\begin{itemize}
+    \item Encoder $E_\phi$: small PointNet++. \citeneeded{Qi et al.\ 2017, PointNet++}
+    \item Decoder $D_\psi$: receives the latent code and a coordinate, returns the indices at that point.
+    \item No outcome in the loss.
+\end{itemize}
+\begin{equation}
+    \mathbf{z}_i = E_\phi(\mathcal{P}_i) \in \mathbb{R}^{32},
+    \qquad
+    \hat{\mathbf{q}}_{ij} = D_\psi(\mathbf{z}_i, \mathbf{x}_{ij})
+\end{equation}
+\begin{equation}
+    \mathcal{L}(\phi,\psi) = \frac{1}{nN}\sum_{i=1}^{n}\sum_{j=1}^{N} \left\lVert \hat{\mathbf{q}}_{ij} - \mathbf{q}_{ij} \right\rVert^2_{\mathbf{W}}
+\end{equation}
+
+\section{Encoder checks}
+\begin{itemize}
+    \item Reconstruction $R^2$ per index on unseen patients.
+    \item Linear probe $\mathbf{Hd}_i \approx \mathbf{A}\mathbf{z}_i + \mathbf{b}$: $\mathbf{z}$ should contain at least $\mathbf{Hd}$.
+\end{itemize}
+
+\section{Reduction}
+\begin{equation}
+    \mathbf{Z}_i = \mathbf{V}_k^{\top}\left(\bar{\mathbf{z}}_i - \boldsymbol{\mu}\right) \in \mathbb{R}^{k},
+    \qquad k \in \{1, 2, 3\}
+\end{equation}
+\begin{itemize}
+    \item $\bar{\mathbf{z}}_i$: mean of $\mathbf{z}_i$ over 10--20 point resamplings.
+    \item $k$ fixed in advance, with $1 + p + k \le E/10$.
+\end{itemize}
+
+\section{Models and test}
+\begin{align}
+    M_2:\;& \operatorname{logit} P(y_i = 1) = \beta_0 + \beta_1 S_{B,i} + \boldsymbol{\delta}^{\top}\mathbf{Z}_i \\
+    M_3:\;& \operatorname{logit} P(y_i = 1) = \beta_0 + \beta_1 S_{B,i} + \boldsymbol{\gamma}^{\top}\mathbf{Hd}_i + \boldsymbol{\delta}^{\top}\mathbf{Z}_i
+\end{align}
+\begin{equation}
+    H_0^{(2)}:\; \boldsymbol{\delta} = \mathbf{0} \;\text{ in } M_3,
+    \qquad
+    \Lambda_2 = 2\left(\ell_3 - \ell_1\right) \;\overset{H_0}{\sim}\; \chi^2_{k}
+\end{equation}
+\begin{itemize}
+    \item Main test: $M_3$ vs.\ $M_1$. Secondary: $M_2$ vs.\ $M_0$.
+    \item Inference: encoder and PCA fitted once on the full cohort, without labels (consistent $\mathbf{Z}$).
+    \item Performance: the whole chain (encoder, PCA, logistic) refitted inside each fold.
+\end{itemize}
+
+\section{Controls}
+\begin{itemize}
+    \item $\mathbf{Z}_{\text{shape}}$: same encoder on geometric descriptors only (radius, curvature). Separates hemodynamics from shape.
+    \item $\mathbf{Z}_{\text{perm}}$: fields assigned to the geometry of another patient. Expected: no gain.
+\end{itemize}
+
+\section{Interpretation}
+\begin{equation}
+    \hat{\mathbf{q}}(\mathbf{x}) = D_\psi\left(\boldsymbol{\mu} + a\,\sigma_c\,\mathbf{v}_c,\; \mathbf{x}\right),
+    \qquad a \in \{-2, 0, 2\},\; \mathbf{x} \in \Gamma_{\mathrm{ref}}
+\end{equation}
+Each component is decoded on a reference geometry to show which spatial pattern it encodes.
+
+\section{Optional: surface maps}
+\begin{itemize}
+    \item VMTK longitudinal--circumferential maps $m_i(s,\theta)$ of the indices. \citeneeded{VMTK branch mapping}
+    \item Functional PCA gives $\mathbf{Z}_{\text{map}}$.
+    \item $\mathbf{Z}$ vs.\ $\mathbf{Z}_{\text{map}}$: does the Euclidean neighbourhood of PointNet++ matter, compared with distances along the surface?
+\end{itemize}
+
+\section{Limitations}
+\begin{itemize}
+    \item Few patients also for unsupervised training: $\mathbf{Z}$ may only recover $\mathbf{Hd}$.
+    \item Arbitrary design choices (latent size, $k$, preprocessing): fixed in advance and reported.
+    \item Cycle-averaged indices: no time dynamics within the cycle.
+\end{itemize}

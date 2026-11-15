@@ -1,0 +1,53 @@
+\section{From imaging to simulation}
+Pipeline used in this work:
+\begin{enumerate}
+    \item Segmentation of the lumen from preoperative CTA in 3D Slicer \cite{lasso_slicerheart_2022, trentin_automatic_2015}.
+    \item Centerlines and clipping with VMTK. \citeneeded{VMTK}
+    \item Mesh preprocessing (ParaView, pyvista) and volume meshing (SimVascular, TetGen). \citeneeded{SimVascular}
+    \item Solution with svMultiPhysics. \citeneeded{svMultiPhysics}
+\end{enumerate}
+
+\section{Modelling assumptions}
+\begin{itemize}
+    \item Inflow and outflow boundary conditions (RCR) \cite{du_outflow_2015, ramazanli_modeling_2025, les_quantification_2010}.
+    \item Rigid walls, Newtonian blood. Limits of these choices: see Section~\ref{sec:p1-limits}.
+    \item {[}Open point: patient-specific or generic boundary conditions.]
+\end{itemize}
+
+\section{Simulation quality control}
+\begin{itemize}
+    \item Periodicity of the last cardiac cycle, mass balance, plausibility of pressures (Appendix~A).
+    \item Only simulations that pass all checks enter the cohort.
+\end{itemize}
+
+\section{Wall shear stress indices}
+\label{sec:wss-indices}
+Let $\boldsymbol{\tau}_w(\mathbf{x},t)$ be the wall shear stress at wall point $\mathbf{x}$, and $[0,T]$ the last cardiac cycle.
+All indices are averaged over the cycle, so they do not depend on the cardiac phase
+\cite{mutlu_integrated_2026, katsoudas_hemodynamic_2026}.
+
+\begin{equation}
+    \mathrm{TAWSS}(\mathbf{x}) = \frac{1}{T}\int_0^T \lVert \boldsymbol{\tau}_w(\mathbf{x},t) \rVert \, dt
+\end{equation}
+
+\begin{equation}
+    \mathrm{OSI}(\mathbf{x}) = \frac{1}{2}\left(1 - \frac{\left\lVert \int_0^T \boldsymbol{\tau}_w(\mathbf{x},t)\,dt \right\rVert}{\int_0^T \lVert \boldsymbol{\tau}_w(\mathbf{x},t) \rVert \, dt}\right)
+    \quad \citeneeded{Ku et al.\ 1985}
+\end{equation}
+
+\begin{equation}
+    \mathrm{RRT}(\mathbf{x}) = \frac{1}{\left(1 - 2\,\mathrm{OSI}(\mathbf{x})\right)\mathrm{TAWSS}(\mathbf{x})}
+    \quad \citeneeded{Himburg et al.\ 2004}
+\end{equation}
+
+\begin{itemize}
+    \item TAWSS: mean intensity of wall shear stress.
+    \item OSI: change of direction; 0 = unidirectional, 0.5 = purely oscillatory.
+    \item RRT: high where shear stress is low and oscillatory (stagnation).
+\end{itemize}
+
+\section{Hemodynamics in AAA}
+\begin{itemize}
+    \item Links between WSS indices, thrombus and rupture \cite{qiu_association_2022, zambrano_association_2022, belkacemi_intraluminal_2023, meyrignac_combining_2020}.
+    \item Proposed hemodynamic risk indicators \cite{pan_proposal_2023, mutlu_how_2023}.
+\end{itemize}
