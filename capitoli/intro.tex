@@ -3,8 +3,9 @@
 \section*{Problem}
 \begin{itemize}
     \item EVAR is the standard minimally invasive repair of abdominal aortic aneurysms (AAA). \citeneeded{EVAR overview / trials}
-    \item Complications after EVAR (mainly endoleaks) need lifelong imaging follow-up. \citeneeded{post-EVAR complications and surveillance}
-    \item Current prediction models use anatomy and radiomics \cite{peng_predict_2024}.
+    \item Complications after EVAR (mainly endoleaks, other AEs to be discussed) need lifelong imaging follow-up --> exposure to radiation, cost for healthcare systems \citeneeded{post-EVAR complications and surveillance}
+    \item Current protocol guidelines in clinical practice use anatomical characteristics to define to follow up treatment (i.e. neck length, AAA diameter) \citeneeded{paper da meditech}
+    \item Research in the field has introduced the use of prediction models merging anatomy and radiomics \cite{peng_predict_2024}.
     \item Hemodynamics may add information, but its added value has not been isolated.
 \end{itemize}
 
@@ -14,7 +15,7 @@ beyond an existing radiomic--morphological benchmark? And in which form?
 
 \section*{Hypotheses}
 \begin{itemize}
-    \item \textbf{H1 (tabular).} Regional hemodynamic features $\mathbf{Hd}$ add information to the benchmark score $S_B$.
+    \item \textbf{H1 (traditional ML).} Regional hemodynamic features $\mathbf{Hd}$ add information to the benchmark score $S_B$.
     \item \textbf{H2 (geometry-aware).} A spatial representation $\mathbf{Z}$ of the same indices adds information beyond $S_B$ and $\mathbf{Hd}$.
 \end{itemize}
 Both are tested as incremental value with a fixed model (Chapter~\ref{ch:framework}).
