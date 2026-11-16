@@ -40,6 +40,15 @@ Modelling assumptions: rigid wall, Newtonian fluid, modelled outlets.
     \item Thresholds $\theta$ from the literature. \citeneeded{TAWSS and OSI thresholds}
 \end{itemize}
 
+\subsection{Point-wise hemodynamic representation}
+\begin{itemize}
+    \item $N = 4096$ wall points per patient, sampled by area, aligned on the centerline.
+    \item Per point: coordinates and $\mathbf{q} = (\log\mathrm{TAWSS}, \mathrm{OSI}, \log\mathrm{RRT})$, standardised.
+\end{itemize}
+\begin{equation}
+    \mathcal{P}_i = \left\{ \left(\mathbf{x}_{ij},\, \mathbf{q}_{ij}\right) \right\}_{j=1}^{N}
+\end{equation}
+
 \section{Exploratory analysis}
 \begin{itemize}
     \item Distributions and missing values.

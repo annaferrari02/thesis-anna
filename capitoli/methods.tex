@@ -1,10 +1,10 @@
 \section{Protocol}
 \begin{itemize}
-    \item Fixed before the analysis: outcome, $\mathbf{Hd}$ set, models, endpoints.
+    \item Fixed before the analysis: outcome, $\mathbf{Hd}$ set, number of components $k$, models, endpoints.
     \item Sample size: events per parameter, with $E$ the number of events. \citeneeded{Peduzzi et al.\ 1996} \citeneeded{Riley et al.\ 2020}
 \end{itemize}
 \begin{equation}
-    1 + p \;\le\; \frac{E}{10}
+    1 + p + k \;\le\; \frac{E}{10}
 \end{equation}
 
 \section{Reference model and score}
@@ -43,6 +43,54 @@ $M_0$ is the recalibrated benchmark \citeneeded{Cox 1958}; $M_1$ extends it with
     \end{equation}
     \item \textbf{Correction for optimism}: out-of-fold estimates or bootstrap optimism correction. \citeneeded{Steyerberg 2019}
 \end{enumerate}
+
+\section{Geometry-aware analysis (Q2)}
+
+\subsection{Point-based encoder}
+\begin{itemize}
+    \item Encoder $E_\phi$: small PointNet++. \citeneeded{Qi et al.\ 2017, PointNet++}
+    \item Decoder $D_\psi$: receives the latent code and a coordinate, returns the indices at that point.
+    \item Trained without the outcome (no label leakage).
+\end{itemize}
+\begin{equation}
+    \mathbf{z}_i = E_\phi(\mathcal{P}_i) \in \mathbb{R}^{32},
+    \qquad
+    \hat{\mathbf{q}}_{ij} = D_\psi(\mathbf{z}_i, \mathbf{x}_{ij})
+\end{equation}
+\begin{equation}
+    \mathcal{L}(\phi,\psi) = \frac{1}{nN}\sum_{i=1}^{n}\sum_{j=1}^{N} \left\lVert \hat{\mathbf{q}}_{ij} - \mathbf{q}_{ij} \right\rVert^2_{\mathbf{W}}
+\end{equation}
+\begin{itemize}
+    \item Checks: reconstruction $R^2$ on unseen patients; linear probe $\mathbf{Hd}_i \approx \mathbf{A}\mathbf{z}_i + \mathbf{b}$.
+\end{itemize}
+
+\subsection{Reduction}
+\begin{equation}
+    \mathbf{Z}_i = \mathbf{V}_k^{\top}\left(\bar{\mathbf{z}}_i - \boldsymbol{\mu}\right) \in \mathbb{R}^{k}
+\end{equation}
+$\bar{\mathbf{z}}_i$: mean of $\mathbf{z}_i$ over point resamplings; PCA keeps $k$ components, fixed in advance.
+
+\subsection{Models and test}
+\begin{equation}
+    M_3:\; \operatorname{logit} P(D_i = 1) = \beta_0 + \beta_1 S_{B,i} + \boldsymbol{\gamma}^{\top}\mathbf{Hd}_i + \boldsymbol{\delta}^{\top}\mathbf{Z}_i
+\end{equation}
+\begin{equation}
+    H_0^{(2)}:\; \boldsymbol{\delta} = \mathbf{0},
+    \qquad
+    \Lambda_2 = 2\left(\ell_3 - \ell_1\right) \;\overset{H_0}{\sim}\; \chi^2_{k}
+\end{equation}
+\begin{itemize}
+    \item Same order as the primary analysis: calibration, LRT, performance gain with CI.
+    \item Encoder and PCA fitted once on the full cohort for the LRT; refitted inside each fold for the performance estimates.
+    \item Holm--Bonferroni correction across Q1 and Q2.
+\end{itemize}
+
+\subsection{Controls and interpretation}
+\begin{itemize}
+    \item $\mathbf{Z}_{\text{shape}}$: same encoder on geometric descriptors only; separates hemodynamics from shape.
+    \item $\mathbf{Z}_{\text{perm}}$: fields assigned to another patient's geometry; expected no gain.
+    \item Each component decoded on a reference geometry to show its spatial pattern.
+\end{itemize}
 
 \section{Secondary and sensitivity analyses}
 \begin{itemize}

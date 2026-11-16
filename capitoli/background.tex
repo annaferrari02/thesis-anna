@@ -32,10 +32,9 @@ All indices are averaged over the cycle \cite{mutlu_integrated_2026, katsoudas_h
 \subsection{The role of Hemodynamics in AAA studies}
 Why hemodynamics could be informative for post-EVAR complications:
 \begin{itemize}
-    \item Links between WSS indices and thrombus in AAA, as well as AAA growth or rupture\cite{qiu_association_2022, zambrano_association_2022, belkacemi_intraluminal_2023}.
+    \item Links between WSS indices and thrombus in AAA, as well as AAA growth or rupture \cite{qiu_association_2022, zambrano_association_2022, belkacemi_intraluminal_2023}.
     \item Load on the proximal neck and landing zones $\rightarrow$ seal failure (type I endoleak, migration). \citeneeded{mechanism}
     \item Low and oscillatory flow in the sac $\rightarrow$ thrombus, branch backflow (type II endoleak, sac behaviour). \citeneeded{mechanism}
-    
 \end{itemize}
 
 \subsection{CFD studies}
@@ -48,9 +47,10 @@ Why hemodynamics could be informative for post-EVAR complications:
 \section{Closest work and gap}
 \begin{itemize}
     \item Peng et al.: point-cloud network with morphology, radiomics and CFD; AUC from 0.81 to 0.93. \citeneeded{Peng et al.\ 2026, medRxiv}
-    \item The +0.12 AUC from CFD is mixed with an architecture change (1 vs.\ 3 feature extractors). Cannot really ensure that Hd actually improved model prediction. 
-    \item One test set, no confidence intervals or paired tests. no uncertainty quantification.
+    \item The +0.12 AUC from CFD is mixed with an architecture change (1 vs.\ 3 feature extractors). It cannot show that CFD itself improved the prediction.
+    \item One test set, no confidence intervals or paired tests: no uncertainty quantification.
     \item Gap: no study isolates the contribution of preoperative CFD in risk prediction of post EVAR complication with a fixed model.
+    \item Regional means may lose where on the wall the indices are high or low; a point-based encoder can keep this spatial information. \citeneeded{Qi et al.\ 2017, PointNet++}
 \end{itemize}
 
 \section{Assessing Hemodynamic predictive value}
@@ -75,12 +75,17 @@ Why hemodynamics could be informative for post-EVAR complications:
     \item Decision curve analysis and net benefit. \citeneeded{Vickers and Elkin 2006}
 \end{itemize}
 
-\subsection{Research question and hypothesis}
-Do preoperative hemodynamic features carry predictive information about post-EVAR adverse events beyond the reference radiomic--morphological model?
+\subsection{Research questions and hypotheses}
+\textbf{Q1.} Do preoperative hemodynamic features carry predictive information about post-EVAR adverse events beyond the reference radiomic--morphological model?
 
 Formal hypothesis, following \cite{pepe_testing_2013}:
 \begin{align}
     H_0:&\; P\left(D = 1 \mid S_B, \mathbf{Hd}\right) = P\left(D = 1 \mid S_B\right) \\
     H_1:&\; \mathbf{Hd} \text{ carries additional information about } D \text{ given } S_B
 \end{align}
-The question is purely predictive (conditional association), not causal.
+\textbf{Q2.} Does a geometry-aware representation $\mathbf{Z}$ of the same indices, learned by a point-based encoder, carry information beyond $S_B$ and $\mathbf{Hd}$?
+\begin{align}
+    H_0^{(2)}:&\; P\left(D = 1 \mid S_B, \mathbf{Hd}, \mathbf{Z}\right) = P\left(D = 1 \mid S_B, \mathbf{Hd}\right) \\
+    H_1^{(2)}:&\; \mathbf{Z} \text{ carries additional information about } D \text{ given } S_B \text{ and } \mathbf{Hd}
+\end{align}
+Both questions are purely predictive (conditional association), not causal.
