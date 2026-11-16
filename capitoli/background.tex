@@ -48,23 +48,12 @@ Why hemodynamics could be informative for post-EVAR complications:
 \section{Assessing Hemodynamic predictive value}
 \label{sec:framework}
 
-\subsection{Testing a new predictor}
+\subsection{Testing and evaluating a new predictor}
 \begin{itemize}
-    \item Quantifying the added value of a new marker \cite{cook_quantifying_2018}.
-    \item For nested models, ``no added information'' is the same null hypothesis for the coefficients, $\Delta$AUC, $\Delta$NetBenefit \cite{pepe_testing_2013}.
-    \item Test the coefficients with a likelihood ratio test; report $\Delta$AUC as an effect size. 
-\end{itemize}
-
-\subsection{Extending an existing model}
-\begin{itemize}
-    \item Recalibration and extension of an existing model with new predictors \cite{janssen_updating_2008}.
-    \item Out-of-fold (pre-validated) scores avoid an optimistic reference model. \citeneeded{Tibshirani and Efron 2002}
-\end{itemize}
-
-\subsection{Calibration and decision curves}
-\begin{itemize}
-    \item Discrimination vs.\ calibration \cite{alba_discrimination_2017}. \citeneeded{Van Calster et al.\ 2019}
-    \item Decision curve analysis and net benefit. \citeneeded{Vickers and Elkin 2006}
+    \item The new predictor extends an existing model, recalibrated on the new data \cite{cook_quantifying_2018, janssen_updating_2008}.
+    \item The reference score is computed out of fold (pre-validated), so it is not optimistic. \citeneeded{Tibshirani and Efron 2002}
+    \item For nested models, ``no added information'' is the same null hypothesis for the coefficients, $\Delta$AUC and $\Delta$NetBenefit \cite{pepe_testing_2013}: the coefficients are tested with a likelihood ratio test, and $\Delta$AUC is reported as an effect size.
+    \item Performance is described by discrimination, calibration \cite{alba_discrimination_2017} and decision curves (net benefit). \citeneeded{Van Calster et al.\ 2019} \citeneeded{Vickers and Elkin 2006}
 \end{itemize}
 
 \subsection{Research questions and hypotheses}
