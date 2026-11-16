@@ -1,0 +1,47 @@
+Data source and setting: single-centre cohort from ASUIT. {[}Type of data: CTA, clinical follow-up, CFD.]
+
+\section{Cohort and outcome}
+Items 6--8 of TRIPOD+AI \cite{collins_tripodai_2024}.
+\begin{itemize}
+    \item Inclusion and exclusion criteria. {[}To define.]
+    \item Minimum follow-up: the only outcome-related exclusion; it avoids false negatives.
+    \item Flowchart of included and excluded patients.
+    \item Primary outcome $D \in \{0,1\}$ and time horizon. {[}To define with clinicians.]
+\end{itemize}
+
+\section{Imaging and CFD pipeline}
+\begin{enumerate}
+    \item From CTA to segmentation in 3D Slicer \cite{lasso_slicerheart_2022, trentin_automatic_2015}.
+    \item Centerlines and clipping with VMTK. \citeneeded{VMTK}
+    \item Mesh: preprocessing, volume meshing (SimVascular, TetGen), mesh quality control. \citeneeded{SimVascular}
+    \item Solver setup (svMultiPhysics) and boundary conditions: inflow and RCR outlets \cite{du_outflow_2015, ramazanli_modeling_2025, les_quantification_2010}. \citeneeded{svMultiPhysics}
+    \item Quality control of the simulations and excluded patients (Appendix~\ref{app:cfd}).
+\end{enumerate}
+Modelling assumptions: rigid wall, Newtonian fluid, modelled outlets.
+
+\section{Features}
+
+\subsection{Benchmark inputs}
+\begin{itemize}
+    \item Morphological and radiomic features, as defined by the reference model (Appendix~\ref{app:benchmark}).
+\end{itemize}
+
+\subsection{Regional hemodynamic features}
+\begin{itemize}
+    \item Indices from Section~\ref{sec:wss-indices}, on regions $R_k$: proximal neck, sac, iliacs.
+\end{itemize}
+\begin{equation}
+    \bar{q}_{k} = \frac{1}{|R_k|}\int_{R_k} q(\mathbf{x})\,dA,
+    \qquad
+    f_{k}(\theta) = \frac{1}{|R_k|}\int_{R_k} \mathbb{1}\left[q(\mathbf{x}) > \theta\right] dA
+\end{equation}
+\begin{itemize}
+    \item Pre-specified set $\mathbf{Hd}_i \in \mathbb{R}^p$, with small $p$. {[}To decide.]
+    \item Thresholds $\theta$ from the literature. \citeneeded{TAWSS and OSI thresholds}
+\end{itemize}
+
+\section{Exploratory analysis}
+\begin{itemize}
+    \item Distributions and missing values.
+    \item Correlation between $\mathbf{Hd}$ and morphology: how redundant the hemodynamic information is.
+\end{itemize}

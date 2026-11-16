@@ -1,30 +1,32 @@
-\section{Clinical problem}
+\section{Clinical context}
 \begin{itemize}
     \item EVAR is the standard minimally invasive repair of abdominal aortic aneurysms (AAA). \citeneeded{EVAR overview / trials}
-    \item Complications after EVAR (mainly endoleaks, other AEs to be discussed) need lifelong imaging follow-up --> exposure to radiation, cost for healthcare systems \citeneeded{post-EVAR complications and surveillance}
-    \item Current protocol guidelines in clinical practice use anatomical characteristics to define to follow up treatment (i.e. neck length, AAA diameter) \citeneeded{paper da meditech}
-    \item Research in the field has introduced the use of prediction models merging anatomy and radiomics \cite{peng_predict_2024}.
+    \item After EVAR, patients need lifelong imaging surveillance: radiation, contrast agent, cost for healthcare systems. \citeneeded{post-EVAR surveillance}
+    \item Current guidelines use anatomical characteristics (e.g.\ neck length, AAA diameter) to define follow-up. \citeneeded{paper da meditech}
+    \item Research has introduced prediction models merging anatomy and radiomics \cite{peng_predict_2024}.
     \item Hemodynamics may add information, but its added value has not been isolated.
 \end{itemize}
 
-\section{Research question and hypotheses}
-Does preoperative CFD add predictive information on post-EVAR complications,
-beyond an existing radiomic--morphological benchmark? And in which form?
+\section{Post-EVAR adverse events}
+{[}To discuss with clinicians. Brief description of the outcomes only.]
 \begin{itemize}
-    \item \textbf{H1 (traditional ML).} Regional hemodynamic features $\mathbf{Hd}$ add information to the benchmark score $S_B$.
-    \item \textbf{H2 (geometry-aware).} A spatial representation $\mathbf{Z}$ of the same indices adds information beyond $S_B$ and $\mathbf{Hd}$.
+    \item Endoleaks: types I--V. \citeneeded{endoleak classification}
+    \item Sac behaviour: shrinkage, stability, expansion.
+    \item Graft migration, limb occlusion, reintervention, rupture.
 \end{itemize}
-Both are tested as incremental value with a fixed model (Section~\ref{sec:framework}).
 
-\section{Contributions}
+\section{Research question and objectives}
+Objective and hypotheses as in TRIPOD+AI \cite{collins_tripodai_2024}.
 \begin{itemize}
-    \item First estimate of the incremental value of preoperative CFD for post-EVAR complications, with a fixed model and quantified uncertainty.
-    \item Comparison of a tabular and a spatial summary of the same CFD.
-    \item Explicit controls for shape-only and permuted information.
+    \item \textbf{Primary question.} Does preoperative CFD add predictive value beyond the reference radiomic--morphological model?
+    \item \textbf{Formal hypothesis:} $H_0$ and $H_1$ in Section~\ref{sec:framework}.
+    \item \textbf{Secondary questions.} {[}To define: which regions and indices carry the signal; whether the gain is clinically useful.]
 \end{itemize}
 
 \section{Outline}
 Chapter~\ref{ch:background}: background and related work.
-Chapter~\ref{ch:methods}: data, CFD pipeline, Phase~1 and Phase~2.
+Chapter~\ref{ch:data}: cohort, CFD pipeline and features.
+Chapter~\ref{ch:methods}: protocol and analyses.
 Chapter~\ref{ch:results}: results.
-Chapter~\ref{ch:discussion}: discussion and conclusion.
+Chapter~\ref{ch:discussion}: discussion.
+Chapter~\ref{ch:conclusion}: conclusion.

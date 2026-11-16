@@ -1,107 +1,85 @@
-\section{EVAR and its complications}
-
-\subsection{Abdominal aortic aneurysm}
+\section{Predicting post-EVAR outcomes}
 \begin{itemize}
-    \item Definition, epidemiology, rupture risk. \citeneeded{AAA epidemiology and guidelines}
-    \item Role of diameter in current clinical decisions. \citeneeded{ESVS guidelines}
+    \item Models based on morphology and radiomics \cite{peng_predict_2024}. \citeneeded{Wang 2022} \citeneeded{Karthikesalingam}
+    \item Deep learning models. \citeneeded{NornirNet}
+    \item None of them uses hemodynamics.
 \end{itemize}
 
-\subsection{Endovascular repair}
-\begin{itemize}
-    \item Procedure: stent-graft, proximal neck, iliac landing zones. \citeneeded{EVAR technique}
-    \item Comparison with open repair. \citeneeded{EVAR trials}
-\end{itemize}
+\section{Hemodynamics in AAA and after EVAR}
 
-\subsection{Complications and follow-up}
-\begin{itemize}
-    \item Endoleaks: types I--V and their mechanisms. \citeneeded{endoleak classification}
-    \item Other complications: migration, limb thrombosis, reintervention, rupture.
-    \item Surveillance burden; preoperative risk stratification could personalise follow-up. \citeneeded{post-EVAR surveillance}
-\end{itemize}
-
-\section{CFD and wall shear stress indices}
-
-\subsection{Indices}
+\subsection{Wall shear stress indices}
 \label{sec:wss-indices}
 Let $\boldsymbol{\tau}_w(\mathbf{x},t)$ be the wall shear stress at wall point $\mathbf{x}$, and $[0,T]$ the last cardiac cycle.
-All indices are averaged over the cycle, so they do not depend on the cardiac phase
-\cite{mutlu_integrated_2026, katsoudas_hemodynamic_2026}.
-
+All indices are averaged over the cycle \cite{mutlu_integrated_2026, katsoudas_hemodynamic_2026}.
 \begin{equation}
     \mathrm{TAWSS}(\mathbf{x}) = \frac{1}{T}\int_0^T \lVert \boldsymbol{\tau}_w(\mathbf{x},t) \rVert \, dt
 \end{equation}
-
 \begin{equation}
     \mathrm{OSI}(\mathbf{x}) = \frac{1}{2}\left(1 - \frac{\left\lVert \int_0^T \boldsymbol{\tau}_w(\mathbf{x},t)\,dt \right\rVert}{\int_0^T \lVert \boldsymbol{\tau}_w(\mathbf{x},t) \rVert \, dt}\right)
 \end{equation}
-
 \begin{equation}
-    \mathrm{RRT}(\mathbf{x}) = \frac{1}{\left(1 - 2\,\mathrm{OSI}(\mathbf{x})\right)\mathrm{TAWSS}(\mathbf{x})}
+    \mathrm{RRT}(\mathbf{x}) = \frac{1}{\left(1 - 2\,\mathrm{OSI}(\mathbf{x})\right)\mathrm{TAWSS}(\mathbf{x})},
+    \qquad
+    \mathrm{ECAP}(\mathbf{x}) = \frac{\mathrm{OSI}(\mathbf{x})}{\mathrm{TAWSS}(\mathbf{x})}
 \end{equation}
-
 \begin{itemize}
     \item TAWSS: mean intensity of wall shear stress.
     \item OSI: change of direction; 0 = unidirectional, 0.5 = purely oscillatory. \citeneeded{Ku et al.\ 1985}
     \item RRT: high where shear stress is low and oscillatory (stagnation). \citeneeded{Himburg et al.\ 2004}
+    \item ECAP: exposure of the wall to low and oscillatory shear, linked to thrombus formation. \citeneeded{Di Achille et al.\ 2014}
 \end{itemize}
 
-\subsection{Hemodynamics in AAA}
+\subsection{Rationale}
+Why hemodynamics could be informative for post-EVAR complications:
 \begin{itemize}
-    \item Links between WSS indices, thrombus and rupture \cite{qiu_association_2022, zambrano_association_2022, belkacemi_intraluminal_2023, meyrignac_combining_2020}.
-    \item Proposed hemodynamic risk indicators \cite{pan_proposal_2023, mutlu_how_2023}.
+    \item Load on the proximal neck and landing zones $\rightarrow$ seal failure (type I endoleak, migration). \citeneeded{mechanism}
+    \item Low and oscillatory flow in the sac $\rightarrow$ thrombus, branch backflow (type II endoleak, sac behaviour). \citeneeded{mechanism}
+    \item Links between WSS indices and thrombus in AAA \cite{qiu_association_2022, zambrano_association_2022, belkacemi_intraluminal_2023}.
 \end{itemize}
 
-\section{Machine learning for post-EVAR outcomes}
-
-\subsection{Prediction models}
+\subsection{CFD studies}
 \begin{itemize}
-    \item Anatomical and radiomic features for endoleak prediction \cite{peng_predict_2024}.
-    \item Point-cloud network with morphology, radiomics and CFD (AUC 0.81 to 0.93). \citeneeded{Peng et al.\ 2026, medRxiv}
-    \item CFD and ML for AAA growth \cite{forneris_ai-powered_2023, kim_deep_2023}; spatial patterns of hemodynamic indices \cite{rezaeitaleshmahalleh_characterization_2023}.
-    \item Deep learning surrogates of CFD \cite{faisal_rapid_2025, fedotova_automatically_2021}.
+    \item CFD studies of post-EVAR complications: small cohorts, mostly post-operative geometry. \citeneeded{CFD post-EVAR studies}
+    \item Hemodynamic risk indicators in AAA \cite{pan_proposal_2023, mutlu_how_2023, meyrignac_combining_2020}.
+    \item CFD and ML for AAA growth \cite{forneris_ai-powered_2023, kim_deep_2023, rezaeitaleshmahalleh_characterization_2023}.
 \end{itemize}
 
-\subsection{Gap}
+\section{Closest work and gap}
 \begin{itemize}
-    \item In Peng et al.\ the CFD gain is confounded with architecture changes (1 vs.\ 3 feature extractors). \citeneeded{Peng et al.\ 2026}
+    \item Peng et al.: point-cloud network with morphology, radiomics and CFD; AUC from 0.81 to 0.93. \citeneeded{Peng et al.\ 2026, medRxiv}
+    \item The +0.12 AUC from CFD is confounded with an architecture change (1 vs.\ 3 feature extractors).
     \item One test set, no confidence intervals or paired tests.
-    \item No study isolates the incremental value of preoperative CFD for post-EVAR complications with a fixed model.
+    \item Gap: no study isolates the contribution of preoperative CFD with a fixed model.
 \end{itemize}
 
-\section{Incremental value of a new marker}
+\section{Assessing incremental value}
 \label{sec:framework}
 
-\subsection{Null hypothesis}
+\subsection{Testing a new predictor}
 \begin{itemize}
-    \item Question: given an existing model, does a new marker change the risk estimate? \cite{cook_quantifying_2018}
-\end{itemize}
-\begin{equation}
-    H_0:\; P\left(y = 1 \mid S_B, \mathbf{Hd}\right) = P\left(y = 1 \mid S_B\right)
-\end{equation}
-\begin{itemize}
-    \item For nested models, $\boldsymbol{\gamma}=\mathbf{0}$ is equivalent to no gain in AUC, net benefit, NRI and IDI \cite{pepe_testing_2013}.
-    \item One test is enough: the likelihood ratio test (LRT).
+    \item Added value of a new marker \cite{cook_quantifying_2018}.
+    \item For nested models, ``no added information'' is the same null hypothesis for the coefficients, $\Delta$AUC, net benefit, NRI and IDI \cite{pepe_testing_2013}.
+    \item Test the coefficients with a likelihood ratio test; report $\Delta$AUC as an effect size. \citeneeded{Vickers, Cronin, Begg 2011}
 \end{itemize}
 
-\subsection{Why not a test on $\Delta$AUC}
+\subsection{Extending an existing model}
 \begin{itemize}
-    \item For nested models, the DeLong test on AUC is very conservative and has low power; LRT and Wald keep the nominal level. \citeneeded{Vickers, Cronin, Begg 2011}
-    \item Reason: the AUC test assumes two distinct markers, not nested models. \citeneeded{Begg, Gönen, Seshan 2013}
-    \item Critical view of these simulations. \citeneeded{On the assessment of the added value of new predictive biomarkers, 2013}
-    \item $\Delta$AUC is reported as an effect size, not as a test.
+    \item Recalibration and extension of an existing model with new predictors \cite{janssen_updating_2008}.
+    \item Out-of-fold (pre-validated) scores avoid an optimistic reference model. \citeneeded{Tibshirani and Efron 2002}
 \end{itemize}
 
-\subsection{Recalibration and model updating}
+\subsection{Calibration and decision curves}
 \begin{itemize}
     \item Discrimination vs.\ calibration \cite{alba_discrimination_2017}. \citeneeded{Van Calster et al.\ 2019}
-    \item Logistic recalibration of an existing score: intercept and slope. \citeneeded{Cox 1958}
-    \item Recalibration, revision and extension with new predictors \cite{janssen_updating_2008}. \citeneeded{Steyerberg 2019}
-    \item Classical updating uses a separate update set.
+    \item Decision curve analysis and net benefit. \citeneeded{Vickers and Elkin 2006}
 \end{itemize}
 
-\subsection{Pre-validation}
-\begin{itemize}
-    \item Out-of-fold predictions act as an independent update set for each patient. \citeneeded{Tibshirani and Efron 2002}
-    \item Same idea as stacking. \citeneeded{Wolpert 1992}
-    \item Known limit: the one-degree-of-freedom test can be biased. \citeneeded{Höfling and Tibshirani 2008}
-\end{itemize}
+\subsection{Research question and hypothesis}
+Do preoperative hemodynamic features carry predictive information about post-EVAR adverse events beyond the reference radiomic--morphological model?
+
+Formal hypothesis, following \cite{pepe_testing_2013}:
+\begin{align}
+    H_0:&\; P\left(D = 1 \mid S_B, \mathbf{Hd}\right) = P\left(D = 1 \mid S_B\right) \\
+    H_1:&\; \mathbf{Hd} \text{ carries additional information about } D \text{ given } S_B
+\end{align}
+The question is purely predictive (conditional association), not causal.

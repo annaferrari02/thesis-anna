@@ -1,51 +1,26 @@
 \section{Main findings}
 \begin{itemize}
-    \item {[}Does CFD add information? In which form?]
-    \item {[}Reading test and effect size together.]
+    \item {[}Answer to the research question.]
+    \item {[}Comparison with Peng et al.\ and with AAA growth studies.] \citeneeded{Peng et al.\ 2026} \cite{forneris_ai-powered_2023, kim_deep_2023}
 \end{itemize}
 
-\section{Comparison with previous work}
+\section{Plausibility and clinical meaning}
 \begin{itemize}
-    \item {[}Comparison with Peng et al.] \citeneeded{Peng et al.\ 2026}
+    \item {[}Consistency with known hemodynamic mechanisms.]
+    \item {[}What the decision curves imply for surveillance or intervention.]
 \end{itemize}
 
 \section{Limitations}
-\label{sec:limits}
-
-\subsection{Statistical design}
 \begin{itemize}
-    \item $S_B$ is assumed to carry all useful benchmark information; interactions with single features are lost.
-    \item Pre-validation is not a truly independent set.
-    \item $S_B$ is estimated but treated as fixed: p-values slightly optimistic.
-    \item Few events: low power; asymptotic approximations less reliable.
-    \item Bootstrap on out-of-fold predictions ignores refitting variability.
-\end{itemize}
-
-\subsection{Data and CFD}
-\begin{itemize}
-    \item Binary outcome with minimum follow-up: time-to-event and competing risks ignored.
-    \item Selection bias from excluded patients (failed CFD, short follow-up).
-    \item CFD measurement error (boundary conditions, rigid walls) biases effects towards zero.
-    \item Collinearity between $\mathbf{Hd}$ and morphology.
-    \item Internal validation only, single centre; association, not causation.
-\end{itemize}
-
-\subsection{Phase 2}
-\begin{itemize}
-    \item Few patients also for unsupervised training: $\mathbf{Z}$ may only recover $\mathbf{Hd}$.
-    \item Arbitrary design choices (latent size, $k$, preprocessing): fixed in advance and reported.
-    \item Cycle-averaged indices: no time dynamics within the cycle.
+    \item Sample size and number of events.
+    \item Single centre, no external validation.
+    \item CFD assumptions (rigid wall, Newtonian fluid, boundary conditions); segmentation.
+    \item Conservative effect of using a fixed score $S_B$.
 \end{itemize}
 
 \section{Future work}
 \begin{itemize}
-    \item Fast CFD surrogates (e.g.\ physics-informed networks) for clinical use \cite{faisal_rapid_2025}.
-    \item Time-to-event models.
-    \item External validation on other centres.
-\end{itemize}
-
-\section{Conclusion}
-\begin{itemize}
-    \item {[}Answer to the research question, H1 and H2.]
-    \item {[}Main implication for post-EVAR follow-up.]
+    \item External validation.
+    \item Point-wise representations of the full hemodynamic fields.
+    \item Surrogate CFD models \cite{faisal_rapid_2025}.
 \end{itemize}
