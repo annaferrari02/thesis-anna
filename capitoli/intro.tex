@@ -1,6 +1,4 @@
-% Introduction (unnumbered chapter)
-
-\section*{Problem}
+\section{Clinical problem}
 \begin{itemize}
     \item EVAR is the standard minimally invasive repair of abdominal aortic aneurysms (AAA). \citeneeded{EVAR overview / trials}
     \item Complications after EVAR (mainly endoleaks) need lifelong imaging follow-up. \citeneeded{post-EVAR complications and surveillance}
@@ -8,25 +6,24 @@
     \item Hemodynamics may add information, but its added value has not been isolated.
 \end{itemize}
 
-\section*{Research question}
+\section{Research question and hypotheses}
 Does preoperative CFD add predictive information on post-EVAR complications,
 beyond an existing radiomic--morphological benchmark? And in which form?
-
-\section*{Hypotheses}
 \begin{itemize}
     \item \textbf{H1 (tabular).} Regional hemodynamic features $\mathbf{Hd}$ add information to the benchmark score $S_B$.
     \item \textbf{H2 (geometry-aware).} A spatial representation $\mathbf{Z}$ of the same indices adds information beyond $S_B$ and $\mathbf{Hd}$.
 \end{itemize}
-Both are tested as incremental value with a fixed model (Chapter~\ref{ch:framework}).
+Both are tested as incremental value with a fixed model (Section~\ref{sec:framework}).
 
-\section*{Contributions}
+\section{Contributions}
 \begin{itemize}
     \item First estimate of the incremental value of preoperative CFD for post-EVAR complications, with a fixed model and quantified uncertainty.
     \item Comparison of a tabular and a spatial summary of the same CFD.
     \item Explicit controls for shape-only and permuted information.
 \end{itemize}
 
-\section*{Outline}
-Chapter~1: clinical background. Chapter~2: CFD and hemodynamic indices.
-Chapter~3: related work. Chapter~4: statistical framework.
-Chapters~5--6: methods of Phase~1 and Phase~2. Chapters~7--8: results and discussion.
+\section{Outline}
+Chapter~\ref{ch:background}: background and related work.
+Chapter~\ref{ch:methods}: data, CFD pipeline, Phase~1 and Phase~2.
+Chapter~\ref{ch:results}: results.
+Chapter~\ref{ch:discussion}: discussion and conclusion.
