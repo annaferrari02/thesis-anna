@@ -50,7 +50,8 @@ $M_0$ is the recalibrated benchmark \citeneeded{Cox 1958}; $M_1$ extends it with
 \begin{itemize}
     \item Encoder $E_\phi$: small PointNet++. \citeneeded{Qi et al.\ 2017, PointNet++}
     \item Decoder $D_\psi$: receives the latent code and a coordinate, returns the indices at that point.
-    \item Trained without the outcome (no label leakage).
+    \item The decoder gets the geometry for free, so $\mathbf{z}_i$ encodes how the fields are distributed on it, not the shape itself.
+    \item Trained without the outcome (no label leakage). Architecture and training: Appendix~\ref{app:encoder}.
 \end{itemize}
 \begin{equation}
     \mathbf{z}_i = E_\phi(\mathcal{P}_i) \in \mathbb{R}^{32},
@@ -61,14 +62,24 @@ $M_0$ is the recalibrated benchmark \citeneeded{Cox 1958}; $M_1$ extends it with
     \mathcal{L}(\phi,\psi) = \frac{1}{nN}\sum_{i=1}^{n}\sum_{j=1}^{N} \left\lVert \hat{\mathbf{q}}_{ij} - \mathbf{q}_{ij} \right\rVert^2_{\mathbf{W}}
 \end{equation}
 \begin{itemize}
-    \item Checks: reconstruction $R^2$ on unseen patients; linear probe $\mathbf{Hd}_i \approx \mathbf{A}\mathbf{z}_i + \mathbf{b}$.
+    \item $\mathbf{W}$: diagonal weights, so that no index dominates the error.
+\end{itemize}
+
+\subsection{Encoder checks}
+\begin{itemize}
+    \item Reconstruction $R^2$ per index on unseen patients. Low $R^2$: $\mathbf{z}$ does not contain the fields; stop and revise.
+    \item Linear probe $\mathbf{Hd}_i \approx \mathbf{A}\mathbf{z}_i + \mathbf{b}$. High $R^2$: $\mathbf{z}$ contains at least the information in $\mathbf{Hd}$.
 \end{itemize}
 
 \subsection{Reduction}
 \begin{equation}
     \mathbf{Z}_i = \mathbf{V}_k^{\top}\left(\bar{\mathbf{z}}_i - \boldsymbol{\mu}\right) \in \mathbb{R}^{k}
 \end{equation}
-$\bar{\mathbf{z}}_i$: mean of $\mathbf{z}_i$ over point resamplings; PCA keeps $k$ components, fixed in advance.
+\begin{itemize}
+    \item $\bar{\mathbf{z}}_i$: mean of $\mathbf{z}_i$ over 10--20 point resamplings (stable summary).
+    \item $\boldsymbol{\mu}$: mean over patients; $\mathbf{V}_k$: first $k$ principal directions.
+    \item $k = 1$--$3$, fixed in advance: with few events, 32 dimensions are too many for a logistic model.
+\end{itemize}
 
 \subsection{Models and test}
 \begin{equation}
@@ -80,6 +91,7 @@ $\bar{\mathbf{z}}_i$: mean of $\mathbf{z}_i$ over point resamplings; PCA keeps $
     \Lambda_2 = 2\left(\ell_3 - \ell_1\right) \;\overset{H_0}{\sim}\; \chi^2_{k}
 \end{equation}
 \begin{itemize}
+    \item Main test: $M_3$ vs.\ $M_1$ (beyond $\mathbf{Hd}$). Secondary: $M_2$ ($S_B + \mathbf{Z}$) vs.\ $M_0$.
     \item Same order as the primary analysis: calibration, LRT, performance gain with CI.
     \item Encoder and PCA fitted once on the full cohort for the LRT; refitted inside each fold for the performance estimates.
     \item Holm--Bonferroni correction across Q1 and Q2.
@@ -89,7 +101,19 @@ $\bar{\mathbf{z}}_i$: mean of $\mathbf{z}_i$ over point resamplings; PCA keeps $
 \begin{itemize}
     \item $\mathbf{Z}_{\text{shape}}$: same encoder on geometric descriptors only; separates hemodynamics from shape.
     \item $\mathbf{Z}_{\text{perm}}$: fields assigned to another patient's geometry; expected no gain.
-    \item Each component decoded on a reference geometry to show its spatial pattern.
+\end{itemize}
+Each component $c$ is decoded on a reference geometry $\Gamma_{\mathrm{ref}}$, moving along its direction $\mathbf{v}_c$ by $a$ standard deviations $\sigma_c$:
+\begin{equation}
+    \hat{\mathbf{q}}(\mathbf{x}) = D_\psi\left(\boldsymbol{\mu} + a\,\sigma_c\,\mathbf{v}_c,\; \mathbf{x}\right),
+    \qquad a \in \{-2, 0, 2\},\; \mathbf{x} \in \Gamma_{\mathrm{ref}}
+\end{equation}
+This shows which spatial pattern each component encodes.
+
+\subsection{Reading the outcomes}
+\begin{itemize}
+    \item $M_3$ better than $M_1$ and $\mathbf{Z}$ better than $\mathbf{Z}_{\text{shape}}$: the spatial distribution of hemodynamics adds information.
+    \item $M_3$ not better than $M_1$: regional means are enough.
+    \item $\mathbf{Z}$ not better than $\mathbf{Z}_{\text{shape}}$: the gain comes from shape, not hemodynamics.
 \end{itemize}
 
 \section{Secondary and sensitivity analyses}
@@ -98,6 +122,7 @@ $\bar{\mathbf{z}}_i$: mean of $\mathbf{z}_i$ over point resamplings; PCA keeps $
     \item $\mathbf{Hd}$-only model.
     \item Conditional permutation of $\mathbf{Hd}$. \citeneeded{conditional permutation test}
     \item Alternative outcomes; non-linearity (spline on $S_B$); time-to-event analysis.
+    \item Q2: latent size, $k$, number of points; optional surface maps (VMTK longitudinal--circumferential maps with functional PCA) to compare Euclidean and along-surface neighbourhoods. \citeneeded{VMTK branch mapping}
 \end{itemize}
 
 \section{Interpretability and reporting}

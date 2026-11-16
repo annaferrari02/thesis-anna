@@ -25,13 +25,14 @@
 
 \section{Main findings and comparison}
 \begin{itemize}
-    \item {[}Answer to the research question.]
+    \item {[}Q1: do regional hemodynamic features add information?]
+    \item {[}Q2: does the spatial distribution add information beyond $\mathbf{Hd}$? Which decoded patterns carry it?]
     \item {[}Comparison with Peng et al.\ and with AAA growth studies.] \citeneeded{Peng et al.\ 2026} \cite{forneris_ai-powered_2023, kim_deep_2023}
 \end{itemize}
 
 \section{Plausibility and clinical meaning}
 \begin{itemize}
-    \item {[}Consistency with known hemodynamic mechanisms.]
+    \item {[}Consistency with known hemodynamic mechanisms, including the location of the decoded patterns.]
     \item {[}What the decision curves imply for surveillance or intervention.]
 \end{itemize}
 
@@ -42,6 +43,7 @@
     \item CFD assumptions (rigid wall, Newtonian fluid, boundary conditions); segmentation.
     \item Conservative effect of using a fixed score $S_B$.
     \item Q2: few patients also for unsupervised training; $\mathbf{Z}$ may only recover $\mathbf{Hd}$.
+    \item Q2: Euclidean neighbourhoods of PointNet++; design choices (latent size, $k$, alignment); cycle-averaged indices.
 \end{itemize}
 
 \section{Future work}

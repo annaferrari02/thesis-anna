@@ -42,7 +42,9 @@ Modelling assumptions: rigid wall, Newtonian fluid, modelled outlets.
 
 \subsection{Point-wise hemodynamic representation}
 \begin{itemize}
-    \item $N = 4096$ wall points per patient, sampled by area, aligned on the centerline.
+    \item Common anatomical domain for all patients (from proximal neck to common iliacs).
+    \item Alignment: centred on the centroid, axes oriented with the centerline; physical units (cm), no per-patient scaling.
+    \item $N = 4096$ wall points per patient, sampled with probability proportional to area; resampled at each training epoch.
     \item Per point: coordinates and $\mathbf{q} = (\log\mathrm{TAWSS}, \mathrm{OSI}, \log\mathrm{RRT})$, standardised.
 \end{itemize}
 \begin{equation}

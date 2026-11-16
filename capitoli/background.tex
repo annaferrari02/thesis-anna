@@ -44,6 +44,14 @@ Why hemodynamics could be informative for post-EVAR complications:
     \item CFD and ML for AAA growth \cite{forneris_ai-powered_2023, kim_deep_2023, rezaeitaleshmahalleh_characterization_2023}.
 \end{itemize}
 
+\subsection{Learning on point clouds}
+\begin{itemize}
+    \item PointNet: shared MLP on each point and max pooling; invariant to point order. \citeneeded{Qi et al.\ 2017, PointNet}
+    \item PointNet++: the same idea applied on local neighbourhoods, from local to global features. \citeneeded{Qi et al.\ 2017, PointNet++}
+    \item Point-based methods use Euclidean neighbourhoods, not the mesh connectivity; mesh-based alternatives exist. \citeneeded{Pfaff et al.\ 2021, MeshGraphNets}
+    \item Spatial patterns of hemodynamic indices in AAA \cite{rezaeitaleshmahalleh_characterization_2023}.
+\end{itemize}
+
 \section{Closest work and gap}
 \begin{itemize}
     \item Peng et al.: point-cloud network with morphology, radiomics and CFD; AUC from 0.81 to 0.93. \citeneeded{Peng et al.\ 2026, medRxiv}
@@ -83,6 +91,10 @@ Formal hypothesis, following \cite{pepe_testing_2013}:
     H_0:&\; P\left(D = 1 \mid S_B, \mathbf{Hd}\right) = P\left(D = 1 \mid S_B\right) \\
     H_1:&\; \mathbf{Hd} \text{ carries additional information about } D \text{ given } S_B
 \end{align}
+Q2 starts from a limit of $\mathbf{Hd}$: two patients with the same mean TAWSS in the sac have the same $\mathbf{Hd}$,
+even if in one the low TAWSS is diffuse and in the other it is concentrated near the lumbar arteries.
+Only a representation that keeps the position of the values can separate them.
+
 \textbf{Q2.} Does a geometry-aware representation $\mathbf{Z}$ of the same indices, learned by a point-based encoder, carry information beyond $S_B$ and $\mathbf{Hd}$?
 \begin{align}
     H_0^{(2)}:&\; P\left(D = 1 \mid S_B, \mathbf{Hd}, \mathbf{Z}\right) = P\left(D = 1 \mid S_B, \mathbf{Hd}\right) \\
