@@ -29,12 +29,13 @@ All indices are averaged over the cycle \cite{mutlu_integrated_2026, katsoudas_h
     \item ECAP: exposure of the wall to low and oscillatory shear, linked to thrombus formation. \citeneeded{Di Achille et al.\ 2014}
 \end{itemize}
 
-\subsection{Rationale}
+\subsection{The role of Hemodynamics in AAA studies}
 Why hemodynamics could be informative for post-EVAR complications:
 \begin{itemize}
+    \item Links between WSS indices and thrombus in AAA, as well as AAA growth or rupture\cite{qiu_association_2022, zambrano_association_2022, belkacemi_intraluminal_2023}.
     \item Load on the proximal neck and landing zones $\rightarrow$ seal failure (type I endoleak, migration). \citeneeded{mechanism}
     \item Low and oscillatory flow in the sac $\rightarrow$ thrombus, branch backflow (type II endoleak, sac behaviour). \citeneeded{mechanism}
-    \item Links between WSS indices and thrombus in AAA \cite{qiu_association_2022, zambrano_association_2022, belkacemi_intraluminal_2023}.
+    
 \end{itemize}
 
 \subsection{CFD studies}
@@ -47,12 +48,12 @@ Why hemodynamics could be informative for post-EVAR complications:
 \section{Closest work and gap}
 \begin{itemize}
     \item Peng et al.: point-cloud network with morphology, radiomics and CFD; AUC from 0.81 to 0.93. \citeneeded{Peng et al.\ 2026, medRxiv}
-    \item The +0.12 AUC from CFD is confounded with an architecture change (1 vs.\ 3 feature extractors).
-    \item One test set, no confidence intervals or paired tests.
-    \item Gap: no study isolates the contribution of preoperative CFD with a fixed model.
+    \item The +0.12 AUC from CFD is mixed with an architecture change (1 vs.\ 3 feature extractors). Cannot really ensure that Hd actually improved model prediction. 
+    \item One test set, no confidence intervals or paired tests. no uncertainty quantification.
+    \item Gap: no study isolates the contribution of preoperative CFD in risk prediction of post EVAR complication with a fixed model.
 \end{itemize}
 
-\section{Assessing incremental value}
+\section{Assessing Hemodynamic predictive value}
 \label{sec:framework}
 
 \subsection{Testing a new predictor}
