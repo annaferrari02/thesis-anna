@@ -1,17 +1,13 @@
-\section{Protocol}
+
 \begin{itemize}
-    \item Fixed before the analysis: outcome, $\mathbf{Hd}$ set, number of components $k$, models, endpoints.
-    \item Sample size: events per parameter, with $E$ the number of events. \citeneeded{Peduzzi et al.\ 1996} \citeneeded{Riley et al.\ 2020}
+    \item must be fixed before the analysis: outcome (SARA) , $\mathbf{Hd}$ set (TBD) , number of components $k$, models. 
 \end{itemize}
-\begin{equation}
-    1 + p + k \;\le\; \frac{E}{10}
-\end{equation}
 
 \section{Reference model and score}
 \begin{itemize}
     \item Reproduce the benchmark pipeline (Appendix~\ref{app:benchmark}).
-    \item Out-of-fold score: 5 stratified folds, $R$ seeds, whole pipeline refitted in each fold. \citeneeded{Tibshirani and Efron 2002}
-    \item Why out-of-fold: in-sample scores are optimistic and would bias the test against $\mathbf{Hd}$.
+    \item Out-of-fold score: 5 stratified folds, $R$ seeds, whole pipeline refitted in each fold. (we use out of fold pz as a sort of pre validation set per model extension)
+    \item Why out-of-fold: in-sample scores are optimistic and would bias the test against $\mathbf{Hd}$. So, we train and test the benchmark and obtain an OOF score per patient which summarizes the prediction of the model on unseen patient (average of the p assigned to each patient in each repetition): 
 \end{itemize}
 \begin{equation}
     \bar{p}_i = \frac{1}{R}\sum_{r=1}^{R} \hat{p}_i^{(r)},
@@ -26,26 +22,23 @@
     M_0:\;& \operatorname{logit} P(D_i = 1) = \beta_0 + \beta_1 S_{B,i} \\
     M_1:\;& \operatorname{logit} P(D_i = 1) = \beta_0 + \beta_1 S_{B,i} + \boldsymbol{\gamma}^{\top}\mathbf{Hd}_i
 \end{align}
-$M_0$ is the recalibrated benchmark \citeneeded{Cox 1958}; $M_1$ extends it with $\mathbf{Hd}$ \cite{janssen_updating_2008}.
+$M_0$ is the recalibrated benchmark (recalibration is required for comparing two models discrimination, otherwise we mix the effects) \citeneeded{Cox 1958}; $M_1$ extends it with $\mathbf{Hd}$ \cite{janssen_updating_2008}.
 
-\subsection{Order of the analysis}
 \begin{enumerate}
-    \item \textbf{Calibration} of both models: intercept and slope \cite{alba_discrimination_2017}.
+    \item \textbf{Calibration} of both models: intercept and slope \cite{alba_discrimination_2017}. 
     \item \textbf{Likelihood ratio test} on the $\mathbf{Hd}$ block \cite{pepe_testing_2013}:
     \begin{equation}
         H_0:\; \boldsymbol{\gamma} = \mathbf{0},
         \qquad
         \Lambda = 2\left(\ell_1 - \ell_0\right) \;\overset{H_0}{\sim}\; \chi^2_{p}
     \end{equation}
-    \item \textbf{Performance gain} with bootstrap CI: $\Delta$AUC, $\Delta$Brier, $\Delta$net benefit. {[}Thresholds $p_t$: to discuss with clinicians.]
-    \begin{equation}
-        \mathrm{NB}(p_t) = \frac{\mathrm{TP}(p_t)}{n} - \frac{\mathrm{FP}(p_t)}{n}\cdot\frac{p_t}{1 - p_t}
-    \end{equation}
-    \item \textbf{Correction for optimism}: out-of-fold estimates or bootstrap optimism correction. \citeneeded{Steyerberg 2019}
+    \item \textbf{Performance gain} with bootstrap CI: $\Delta$AUC, $\Delta$Brier, $\Delta$net benefit. Pepe 2013 proved that if we reject H0 we confirm also a statistically significant increase in $\Delta$AUC, but we still need to QUANTIFY the improvement. this is what performance gain is for. 
+    
+    \item \textbf{Correction for optimism???}
 \end{enumerate}
 
-\section{Geometry-aware analysis (Q2)}
-
+\section{Secondary analysis (Q2)}
+recall: does a different represetnation of hemodynamics (one that mantains the spatial distribution of hemodynamic field) carry insightful information beyond regionally-aggregated hemodynamic features? to do so we use PointNet++ (as Peng2025)
 \subsection{Point-based encoder}
 \begin{itemize}
     \item Encoder $E_\phi$: small PointNet++. \citeneeded{Qi et al.\ 2017, PointNet++}

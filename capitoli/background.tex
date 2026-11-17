@@ -50,10 +50,10 @@ Why hemodynamics could be informative for post-EVAR complications:
 
 \subsection{Testing and evaluating a new predictor}
 \begin{itemize}
-    \item The new predictor extends an existing model, recalibrated on the new data \cite{cook_quantifying_2018, janssen_updating_2008}.
-    \item The reference score is computed out of fold (pre-validated), so it is not optimistic. \citeneeded{Tibshirani and Efron 2002}
+    \item The new predictor extends an existing model (Morpho + Radiomics), recalibrated on the new data \cite{cook_quantifying_2018, janssen_updating_2008}.
+    \item The reference score is computed out of fold (pre-validated), so it is not optimistic. 
     \item For nested models, ``no added information'' is the same null hypothesis for the coefficients, $\Delta$AUC and $\Delta$NetBenefit \cite{pepe_testing_2013}: the coefficients are tested with a likelihood ratio test, and $\Delta$AUC is reported as an effect size.
-    \item Performance is described by discrimination, calibration \cite{alba_discrimination_2017} and decision curves (net benefit). \citeneeded{Van Calster et al.\ 2019} \citeneeded{Vickers and Elkin 2006}
+    \item Performance is described by discrimination, calibration \cite{alba_discrimination_2017} and decision curves (net benefit).
 \end{itemize}
 
 \subsection{Research questions and hypotheses}
@@ -65,10 +65,10 @@ Formal hypothesis, following \cite{pepe_testing_2013}:
     H_1:&\; \mathbf{Hd} \text{ carries additional information about } D \text{ given } S_B
 \end{align}
 Q2 starts from a limit of $\mathbf{Hd}$: two patients with the same mean TAWSS in the sac have the same $\mathbf{Hd}$,
-even if in one the low TAWSS is diffuse and in the other it is concentrated near the lumbar arteries.
-Only a representation that keeps the position of the values can separate them.
+even if the spatial distribution of "high TAWSS" is very different.
+Only a representation that keeps the position of the values can separate them, ie, a representation that associates to each point of the domain its velocity/WSS value at each timestep t. 
 
-\textbf{Q2.} Does a geometry-aware representation $\mathbf{Z}$ of the same indices, learned by a point-based encoder, carry information beyond $S_B$ and $\mathbf{Hd}$?
+\textbf{Q2.} Does a "geometry-aware" representation $\mathbf{Z}$ of the same indices, learned by a point-based encoder, carry information beyond $S_B$ and $\mathbf{Hd}$?
 \begin{align}
     H_0^{(2)}:&\; P\left(D = 1 \mid S_B, \mathbf{Hd}, \mathbf{Z}\right) = P\left(D = 1 \mid S_B, \mathbf{Hd}\right) \\
     H_1^{(2)}:&\; \mathbf{Z} \text{ carries additional information about } D \text{ given } S_B \text{ and } \mathbf{Hd}

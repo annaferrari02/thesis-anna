@@ -1,6 +1,6 @@
 Data source and setting: single-centre cohort from ASUIT. {[}Type of data: CTA, clinical follow-up, CFD.]
 
-\section{Cohort and outcome}
+\section{Cohort and outcome definition}
 Items 6--8 of TRIPOD+AI \cite{collins_tripodai_2024}.
 \begin{itemize}
     \item Inclusion and exclusion criteria. {[}To define.]
@@ -9,7 +9,7 @@ Items 6--8 of TRIPOD+AI \cite{collins_tripodai_2024}.
     \item Primary outcome $D \in \{0,1\}$ and time horizon. {[}To define with clinicians.]
 \end{itemize}
 
-\section{Imaging and CFD pipeline}
+\section{Data preparation: from CTA to CFD simulation}
 \begin{enumerate}
     \item From CTA to CFD simulation pipeline.  \cite{lasso_slicerheart_2022, trentin_automatic_2015}.
     \item Solver setup (svMultiPhysics) and boundary conditions: inflow and RCR outlets \cite{du_outflow_2015, ramazanli_modeling_2025, les_quantification_2010}. \citeneeded{svMultiPhysics}
@@ -19,14 +19,14 @@ Modelling assumptions: rigid wall, Newtonian fluid, modelled outlets.
 
 \section{Features}
 
-\subsection{Benchmark inputs}
+\subsection{Morphological and radiomic features}
 \begin{itemize}
     \item Morphological and radiomic features, as defined by the reference model (Appendix~\ref{app:benchmark}).
 \end{itemize}
 
-\subsection{Regional hemodynamic features}
+\subsection{Hemodynamic features}
 \begin{itemize}
-    \item Indices from Section~\ref{sec:wss-indices}, on regions $R_k$: proximal neck, sac, iliacs.
+    \item Indices from Section~\ref{sec:wss-indices}, on regions $R_k$: proximal neck, sac, iliacs (still to be discussed, informative regions must be defined in accordance with clinicians) 
 \end{itemize}
 \begin{equation}
     \bar{q}_{k} = \frac{1}{|R_k|}\int_{R_k} q(\mathbf{x})\,dA,
@@ -34,14 +34,10 @@ Modelling assumptions: rigid wall, Newtonian fluid, modelled outlets.
     f_{k}(\theta) = \frac{1}{|R_k|}\int_{R_k} \mathbb{1}\left[q(\mathbf{x}) > \theta\right] dA
 \end{equation}
 \begin{itemize}
-    \item Pre-specified set $\mathbf{Hd}_i \in \mathbb{R}^p$, with small $p$. {[}To decide.]
-    \item Thresholds $\theta$ from the literature. \citeneeded{TAWSS and OSI thresholds}
-\end{itemize}
+    \item Pre-specified set $\mathbf{Hd}_i \in \mathbb{R}^p$, with small $p$. 
+    \item idea: use as feature the portion of the surface of the region that surpasses a thresholds $\theta$ identified from the literature (e.g.: LOW TAWSS<0.4 Pa)
 
-\subsection{Point-wise hemodynamic representation}
-\begin{itemize}
-    \item Common anatomical domain for all patients (from proximal neck to common iliacs).
-    \item Alignment: centred on the centroid, axes oriented with the centerline; physical units (cm), no per-patient scaling.
+    \item in the more complex representation (pointnet++), we keep a common anatomical domain for all patients (from proximal neck to common iliacs). we keep the representation of the hemodynamic field as a point-like representation
     \item $N = 4096$ wall points per patient, sampled with probability proportional to area; resampled at each training epoch.
     \item Per point: coordinates and $\mathbf{q} = (\log\mathrm{TAWSS}, \mathrm{OSI}, \log\mathrm{RRT})$, standardised.
 \end{itemize}
@@ -49,8 +45,3 @@ Modelling assumptions: rigid wall, Newtonian fluid, modelled outlets.
     \mathcal{P}_i = \left\{ \left(\mathbf{x}_{ij},\, \mathbf{q}_{ij}\right) \right\}_{j=1}^{N}
 \end{equation}
 
-\section{Exploratory analysis}
-\begin{itemize}
-    \item Distributions and missing values.
-    \item Correlation between $\mathbf{Hd}$ and morphology: how redundant the hemodynamic information is.
-\end{itemize}
