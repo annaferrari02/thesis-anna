@@ -1,39 +1,13 @@
-\section{Cohort and descriptives}
-\begin{itemize}
-    \item {[}Flowchart, events, outcome of the CFD quality control.]
-    \item {[}Descriptive statistics; redundancy between $\mathbf{Hd}$ and morphology.]
-\end{itemize}
-
-\section{Reference model}
-\begin{itemize}
-    \item {[}Discrimination and calibration of the benchmark on this cohort.]
-\end{itemize}
-
-\section{Incremental value of hemodynamics}
-\begin{itemize}
-    \item {[}Calibration of $M_0$ and $M_1$.]
-    \item {[}Likelihood ratio test; odds ratios with 95\% CI.]
-    \item {[}Validated performance gain with CI; decision curves.]
-\end{itemize}
-
-\section{Geometry-aware representation}
-\begin{itemize}
-    \item {[}Encoder checks: reconstruction and linear probe.]
-    \item {[}LRT for Q2; controls $\mathbf{Z}_{\text{shape}}$ and $\mathbf{Z}_{\text{perm}}$.]
-    \item {[}Decoded components on the reference geometry.]
-\end{itemize}
-
 \section{Main findings and comparison}
 \begin{itemize}
-    \item {[}Q1: do regional hemodynamic features add information?]
-    \item {[}Q2: does the spatial distribution add information beyond $\mathbf{Hd}$? Which decoded patterns carry it?]
-    \item {[}Comparison with Peng et al.\ and with AAA growth studies.] \citeneeded{Peng et al.\ 2026} \cite{forneris_ai-powered_2023, kim_deep_2023}
+    \item Q1: do regional hemodynamic features add information?
+    \item Q2: does the spatial distribution add information beyond $\mathbf{Hd}$? Which decoded patterns carry it?
+    \item Comparison with Peng et al.\ and with AAA growth studies. \citeneeded{Peng et al.\ 2026} \cite{forneris_ai-powered_2023, kim_deep_2023}
 \end{itemize}
 
 \section{Plausibility and clinical meaning}
 \begin{itemize}
-    \item {[}Consistency with known hemodynamic mechanisms, including the location of the decoded patterns.]
-    \item {[}What the decision curves imply for surveillance or intervention.]
+    \item Consistency with known hemodynamic mechanisms, including the location of the decoded patterns.
 \end{itemize}
 
 \section{Limitations}
@@ -41,9 +15,7 @@
     \item Sample size and number of events.
     \item Single centre, no external validation.
     \item CFD assumptions (rigid wall, Newtonian fluid, boundary conditions); segmentation.
-    \item Conservative effect of using a fixed score $S_B$.
-    \item Q2: few patients also for unsupervised training; $\mathbf{Z}$ may only recover $\mathbf{Hd}$.
-    \item Q2: Euclidean neighbourhoods of PointNet++; design choices (latent size, $k$, alignment); cycle-averaged indices.
+    \item ..... 
 \end{itemize}
 
 \section{Future work}
