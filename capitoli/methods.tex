@@ -39,42 +39,46 @@ $M_0$ is the recalibrated benchmark (recalibration is required for comparing two
 
 \section{Secondary analysis (Q2)}
 
-\paragraph{Model structure.}
-Regional features average the indices over each region, so they lose where on the wall the values are.
-Q2 keeps this information by describing each patient as a set of $N$ wall points, each with its coordinates and its indices,
-$\mathcal{P}_i = \{(\mathbf{x}_{ij}, \mathbf{q}_{ij})\}_{j=1}^{N}$.
-A small PointNet++ encoder $E_\phi$ \citeneeded{Qi et al.\ 2017, PointNet++}, the same family of networks used by Peng et al.\ \citeneeded{Peng et al.\ 2026},
-maps the whole set to one vector $\mathbf{z}_i = E_\phi(\mathcal{P}_i) \in \mathbb{R}^{32}$:
-it applies the same layers to local neighbourhoods of points and then pools them, so the result does not depend on the order of the points but does depend on how values are arranged in space.
-The encoder is trained as an autoencoder, without the outcome: a decoder $D_\psi$ receives $\mathbf{z}_i$ and a wall coordinate $\mathbf{x}_{ij}$ and must reconstruct the indices at that point,
-$\hat{\mathbf{q}}_{ij} = D_\psi(\mathbf{z}_i, \mathbf{x}_{ij})$, minimising
-$\mathcal{L} = \frac{1}{nN}\sum_{i,j} \lVert \hat{\mathbf{q}}_{ij} - \mathbf{q}_{ij} \rVert^2_{\mathbf{W}}$.
-Because the decoder already gets the geometry, $\mathbf{z}_i$ must encode how the hemodynamic field is distributed on the wall, not the shape itself.
-With few events, 32 dimensions are too many for a logistic model: $\mathbf{z}_i$ is averaged over point resamplings and reduced with PCA to $k = 1$--$3$ components,
-$\mathbf{Z}_i = \mathbf{V}_k^{\top}(\bar{\mathbf{z}}_i - \boldsymbol{\mu})$.
-$\mathbf{Z}_i$ then enters the same logistic framework as Q1, as one more block of predictors:
+\subsection{Model structure}
+\begin{itemize}
+    \item Why: regional features average each region and lose \emph{where} the values are on the wall.
+    \item Input: each patient as a set of wall points with coordinates and indices, $\mathcal{P}_i = \{(\mathbf{x}_{ij}, \mathbf{q}_{ij})\}_{j=1}^{N}$.
+    \item Encoder: small PointNet++ \citeneeded{Qi et al.\ 2017, PointNet++}, as in Peng et al.\ \citeneeded{Peng et al.\ 2026}. Same layers on local neighbourhoods, then pooling: output independent of point order, dependent on the spatial arrangement of the values.
+    \item Autoencoder, trained without the outcome: the decoder gets $\mathbf{z}_i$ and a coordinate and reconstructs the indices there.
+    \item The decoder already has the geometry $\rightarrow$ $\mathbf{z}_i$ encodes how the field is distributed on the wall, not the shape.
+    \item Reduction: 32 dimensions too many for few events $\rightarrow$ average over point resamplings, PCA to $k = 1$--$3$ components $\mathbf{Z}_i$.
+    \item $\mathbf{Z}_i$ enters the same logistic model as Q1, as one more block: spatial information learned without labels, prediction still a small logistic model, comparable with $M_1$.
+    \item Details: Appendix~\ref{app:encoder}.
+\end{itemize}
 \begin{equation}
+    \mathbf{z}_i = E_\phi(\mathcal{P}_i) \in \mathbb{R}^{32},
+    \qquad
+    \hat{\mathbf{q}}_{ij} = D_\psi(\mathbf{z}_i, \mathbf{x}_{ij}),
+    \qquad
+    \mathcal{L} = \frac{1}{nN}\sum_{i,j} \lVert \hat{\mathbf{q}}_{ij} - \mathbf{q}_{ij} \rVert^2_{\mathbf{W}}
+\end{equation}
+\begin{equation}
+    \mathbf{Z}_i = \mathbf{V}_k^{\top}(\bar{\mathbf{z}}_i - \boldsymbol{\mu}),
+    \qquad
     M_3:\; \operatorname{logit} P(D_i = 1) = \beta_0 + \beta_1 S_{B,i} + \boldsymbol{\gamma}^{\top}\mathbf{Hd}_i + \boldsymbol{\delta}^{\top}\mathbf{Z}_i
 \end{equation}
-In this way the spatial information is learned without labels, while the predictive step stays a small logistic model, directly comparable with $M_1$.
-Architecture and training details are in Appendix~\ref{app:encoder}.
 
-\paragraph{Hypotheses and tests.}
-The main test is $M_3$ against $M_1$, i.e.\ whether $\mathbf{Z}$ adds information beyond $S_B$ and $\mathbf{Hd}$:
+\subsection{Hypotheses and tests}
 \begin{equation}
     H_0^{(2)}:\; \boldsymbol{\delta} = \mathbf{0},
     \qquad
     \Lambda_2 = 2\left(\ell_3 - \ell_1\right) \;\overset{H_0}{\sim}\; \chi^2_{k}
 \end{equation}
-As a secondary test, $M_2$ ($S_B + \mathbf{Z}$) is compared with $M_0$.
-The order is the same as in the primary analysis: calibration, likelihood ratio test, performance gain with bootstrap CI.
-Encoder and PCA are fitted once on the full cohort for the test, and refitted inside each fold for the performance estimates.
-Q1 and Q2 are corrected together with Holm--Bonferroni.
-Before testing, the encoder must pass two checks: reconstruction $R^2$ on unseen patients (otherwise Q2 stops),
-and a linear probe $\mathbf{Hd}_i \approx \mathbf{A}\mathbf{z}_i + \mathbf{b}$ showing that $\mathbf{z}$ contains at least the information in $\mathbf{Hd}$.
-Two controls separate hemodynamics from shape and from artefacts: $\mathbf{Z}_{\text{shape}}$, the same encoder trained on geometric descriptors only, and $\mathbf{Z}_{\text{perm}}$, with fields assigned to another patient's geometry (expected no gain).
-Each component is decoded on a reference geometry, $\hat{\mathbf{q}}(\mathbf{x}) = D_\psi(\boldsymbol{\mu} + a\,\sigma_c\,\mathbf{v}_c, \mathbf{x})$ with $a \in \{-2, 0, 2\}$, to show which spatial pattern it encodes.
-If $M_3$ improves on $M_1$ and $\mathbf{Z}$ beats $\mathbf{Z}_{\text{shape}}$, the spatial distribution of hemodynamics adds information; if not, regional means are enough, or the gain comes from shape.
+\begin{itemize}
+    \item Main test: $M_3$ vs.\ $M_1$ (beyond $\mathbf{Hd}$). Secondary: $M_2$ ($S_B + \mathbf{Z}$) vs.\ $M_0$.
+    \item Same order as Q1: calibration, LRT, performance gain with bootstrap CI.
+    \item Encoder and PCA: fitted once on the full cohort for the test; refitted inside each fold for performance.
+    \item Holm--Bonferroni across Q1 and Q2.
+    \item Gate: reconstruction $R^2$ on unseen patients (otherwise Q2 stops); linear probe $\mathbf{Hd}_i \approx \mathbf{A}\mathbf{z}_i + \mathbf{b}$.
+    \item Controls: $\mathbf{Z}_{\text{shape}}$ (geometry only) and $\mathbf{Z}_{\text{perm}}$ (fields permuted across patients).
+    \item Interpretation: decode each component on a reference geometry, $D_\psi(\boldsymbol{\mu} + a\,\sigma_c\,\mathbf{v}_c, \mathbf{x})$, $a \in \{-2, 0, 2\}$.
+    \item Reading: $M_3 > M_1$ and $\mathbf{Z} > \mathbf{Z}_{\text{shape}}$ $\rightarrow$ spatial distribution adds information; otherwise regional means are enough, or the gain comes from shape.
+\end{itemize}
 
 \section{Secondary and sensitivity analyses}
 \begin{itemize}
