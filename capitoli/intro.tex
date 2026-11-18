@@ -1,25 +1,21 @@
 \section{Clinical context}
-\begin{itemize}
-    \item EVAR is the standard minimally invasive repair of abdominal aortic aneurysms (AAA). \citeneeded{EVAR overview / trials}
-    \item After EVAR, patients need lifelong imaging surveillance: radiation, contrast agent, cost for healthcare systems. \citeneeded{post-EVAR surveillance}
-    \item Current guidelines use anatomical characteristics (e.g.\ neck length, AAA diameter) to define follow-up. \citeneeded{paper da meditech}
-    \item Research has introduced prediction models merging anatomy and radiomics \cite{peng_predict_2024}.
-    \item Hemodynamics may add information, but its added value has not been isolated.
-\end{itemize}
+Abdominal aortic aneurysm (AAA) is a localized dilatation of the abdominal aorta, most commonly in its infrarenal segment. The aorta is considered aneurysmal when its diameter exceeds 3~cm or is at least 1.5 times the normal diameter \cite{sakalihasan_abdominal_2018, katsoudas_hemodynamic_2026}. If left untreated, AAA carries a high mortality risk due to the possibility of rupture, and endovascular or open surgical repair is often indicated to mitigate this risk. Endovascular aneurysm repair (EVAR) is often preferred because it is minimally invasive \cite{braak_scoping_2026, wanhainen_editors_2024}. However, post-procedural complications are common, with an estimated incidence of 18--30\%, and frequently require re-intervention \cite{daye_complications_2018}. 
+Accurate prediction of post-EVAR adverse events (AEs) can support clinicians in determining whether post-EVAR surveillance should be intensified or reduced\cite{peng_endoleak_2026} \citeneeded{Miura}.
 
 \section{Post-EVAR adverse events}
-To discuss with clinicians. Brief description of the outcomes only.
-\begin{itemize}
-    \item Endoleaks: types I--V. \citeneeded{endoleak classification}
-\end{itemize}
+To discuss with clinicians. out of the list, what do we consider as outcome for the model?
+in this paragraph, should i outline the main complications (endoleaks) and others (enlargement/thrombosis/stent migration...) to justify the creation of a broader category of SAEs (Severe adverse Events) which are in the end the outcome of the model?
+
 
 \section{Research question and objectives}
+Assessing the risk of complications after EVAR remains challenging. Risk scores and methods developed for open repair do not account for the anatomical factors that are crucial in endovascular repair. Tools developed specifically for post-EVAR complications show limited predictive performance, largely because of how they were built: they are often developed, trained and tested on small, single-center datasets without consistent external validation, which limits their generalizability and clinical applicability \cite{braak_scoping_2026} \citeneeded{Systematic lijftekot}.
+In recent years, machine learning (ML) methods have been widely explored for this purpose. They can handle high-dimensional clinical data and capture non-linear relationships, two properties considered crucial for modeling EVAR-specific risk profiles \cite{braak_scoping_2026, collins_tripodai_2024}.}
+
 (Objective and hypotheses as in TRIPOD+AI) \cite{collins_tripodai_2024}.
 \begin{itemize}
     \item \textbf{Primary question (Q1).} Does preoperative CFD, represented as regional features, add predictive value beyond the reference radiomic--morphological model? 
     \item \textbf{Second question (Q2).} Does a geometry-based representation of the hemodynamic fields, learned with a point-based encoder, add information beyond the regional features?
-    \item \textbf{Formal hypotheses:} Section~\ref{sec:framework}.
-    \item \textbf{to be discussed:.} which regions and indices might be informative (neck region/AAA, velocity-based indicators or vorticity descriptors? how do we extract these features??
+    \item \textbf{Formal hypotheses:} Section~\ref{sec:framework}
 \end{itemize}
 
 \section{Outline}
