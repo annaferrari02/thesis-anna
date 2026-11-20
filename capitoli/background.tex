@@ -1,11 +1,23 @@
+% Chapter 2 -- Background and related work
+% Flow: hemodynamics in AAA (general -> after EVAR) -> prediction of post-EVAR AEs
+%       -> closest work and gap -> methodological framework
 
+\section{Hemodynamics in abdominal aortic aneurysms}
+\label{sec:hemo-aaa}
 
-\section{Hemodynamics in AAAs}
+\subsection{Rationale}
 \begin{itemize}
-    \item hemodynamic definition, biomarkers, formulas etc 
-    \item how and why hemodynamics has been introducted in the study of AAAs 
-    \item what kind of relationship has been found between hemodynamic and AAA progression (with or without evar) 
+    \item Why flow matters: wall shear stress acts on the endothelium and drives wall remodeling and intraluminal thrombus formation. \citeneeded{}
+    \item Diameter alone is a limited marker of risk; biomechanical indices are more sensitive in predicting rupture \cite{polzer_biomechanical_2020}.
+    \item How and why hemodynamics has been introduced in the study of AAAs. \citeneeded{}
 \end{itemize}
+
+\subsection{Patient-specific CFD}
+\begin{itemize}
+    \item Conceptual overview: from the CTA geometry to a patient-specific simulation of blood flow \cite{hu_computational_2025, mutlu_how_2023}.
+    \item Main modelling assumptions: rigid wall, Newtonian fluid, outlet models. Details of the pipeline used in this thesis in Chapter~\ref{ch:data}.
+\end{itemize}
+
 \subsection{Wall shear stress indices}
 \label{sec:wss-indices}
 Let $\boldsymbol{\tau}_w(\mathbf{x},t)$ be the wall shear stress at wall point $\mathbf{x}$, and $[0,T]$ the last cardiac cycle.
@@ -23,59 +35,52 @@ All indices are averaged over the cycle \cite{mutlu_integrated_2026, katsoudas_h
 \end{equation}
 \begin{itemize}
     \item TAWSS: mean intensity of wall shear stress.
-    \item OSI: change of direction; 0 = unidirectional, 0.5 = purely oscillatory. 
-    \item RRT: high where shear stress is low and oscillatory (stagnation). 
-    \item ECAP: exposure of the wall to low and oscillatory shear, linked to thrombus formation. 
+    \item OSI: change of direction; 0 = unidirectional, 0.5 = purely oscillatory.
+    \item RRT: high where shear stress is low and oscillatory (stagnation).
+    \item ECAP: exposure of the wall to low and oscillatory shear, linked to thrombus formation.
 \end{itemize}
 
-\subsection{links}
-\item Links between WSS indices and thrombus in AAA, as well as AAA growth or rupture \cite{qiu_association_2022, zambrano_association_2022, belkacemi_intraluminal_2023, forneris_ai-powered_2023, kim_deep_2023, rezaeitaleshmahalleh_characterization_2023}.
-    \item Load on the proximal neck and landing zones $\rightarrow$ seal failure (type I endoleak, migration).
-    \item Low and oscillatory flow in the sac $\rightarrow$ thrombus, branch backflow (type II endoleak, sac behaviour). 
-
-\section{Predicting post-EVAR outcomes}
+\subsection{Hemodynamics and AAA progression}
 \begin{itemize}
-    \item Models based on morphology and radiomics \cite{peng_predict_2024,kar}. \citeneeded{Karthikesalingam, Wang 2022} None of them uses hemodynamics.
-    \item peng connected the two dots
+    \item Thrombus: links between WSS indices, vortical structures and intraluminal thrombus \cite{zambrano_association_2022, belkacemi_intraluminal_2023}.
+    \item Growth: WSS-based and hemodynamic biomarkers predict AAA growth \cite{meyrignac_combining_2020, forneris_ai-powered_2023, kim_deep_2023, rezaeitaleshmahalleh_characterization_2023, joly_cohort_2020, fedotova_association_2025}.
+    \item Rupture: blood flow patterns and rupture risk \cite{qiu_association_2022}.
 \end{itemize}
 
-\subsection{The role of Hemodynamics in AAA studies}
-Why hemodynamics could be informative for post-EVAR complications:
+\subsection{Hemodynamics after EVAR}
+\label{sec:hemo-evar}
 \begin{itemize}
-    
-    \item Peng et al.: point-cloud network with morphology, radiomics and CFD; AUC from 0.81 to 0.93. \citeneeded{Peng et al.\ 2026, medRxiv}. they use PointNet++ and obtain a significant inprovement in predictive performance. 
-    \item The +0.12 AUC from CFD is mixed with an architecture change (1 vs.\ 3 feature extractors, completely different feature representation). It cannot show that CFD itself improved the prediction.
+    \item Load on the proximal neck and landing zones $\rightarrow$ seal failure (type I endoleak, migration): displacement forces on the endograft depend on curvature and anatomy \cite{figueroa_effect_2009, kandail_patient-specific_2014}; fast estimates of displacement forces have been related to stent-graft-related endoleaks \cite{weng_role_2025}.
+    \item In-stent-graft helical flow and risk of migration \cite{tasso_-stent_2019}.
+    \item Low and oscillatory flow in the sac $\rightarrow$ thrombus, branch backflow (type II endoleak, sac behaviour). \citeneeded{}
+    \item Limitation: each study addresses a single mechanism and a single complication, on small cohorts, and does not combine hemodynamics with other predictors.
+\end{itemize}
+
+\section{Predicting adverse events after EVAR}
+\label{sec:prediction}
+\begin{itemize}
+    \item Outcomes used across studies (endoleak, re-intervention, sac growth, mortality) $\rightarrow$ link to the outcome definition in Section~1.2.
+    \item Conventional risk scores and their limits \cite{lijftogt_systematic_2017}.
+    \item ML models based on clinical, morphological and radiomic features \cite{braak_scoping_2026, karthikesalingam_artificial_2015, long_applying_2024, li_machine_2023}. \citeneeded{Wang 2022}
+    \item Reference model reproduced in this thesis: multi-dimensional anatomical features for endoleak prediction \cite{peng_predict_2024} (Appendix~\ref{app:benchmark}).
+    \item Recurring limitations: small single-center datasets, no external validation, static descriptors only. None of these models uses hemodynamics.
+\end{itemize}
+
+\section{Closest work and research gap}
+\label{sec:gap}
+\begin{itemize}
+    \item Peng et al.\ \cite{peng_endoleak_2026}: point-cloud network (PointNet++ \cite{qi_pointnet_2017}) on morphology, radiomics and CFD; AUC from 0.81 to 0.93.
+    \item The +0.12 AUC from CFD is confounded with an architecture change (1 vs.\ 3 feature extractors, completely different feature representation). It cannot show that CFD itself improved the prediction.
     \item One test set, no confidence intervals or paired tests: no uncertainty quantification.
-    \item Gap: no study isolates the contribution of preoperative CFD in risk prediction of post EVAR complication with a fixed model.
-    \item Regional means may lose where on the wall the indices are high or low; a point-based encoder can keep this spatial information. \citeneeded{Qi et al.\ 2017, PointNet++}
+    \item Gap 1: no study isolates the contribution of pre-operative CFD to the prediction of post-EVAR complications with a fixed reference model $\rightarrow$ Q1.
+    \item Gap 2: regional means lose \emph{where} on the wall the indices are high or low; a point-based encoder can keep this spatial information \cite{qi_pointnet_2017} $\rightarrow$ Q2.
 \end{itemize}
 
-\section{Metholodical framework: quantify the added value of new biomarkers }
+\section{Methodological framework: assessing the added value of a new predictor}
 \label{sec:framework}
-
-\subsection{Testing and evaluating a new predictor}
 \begin{itemize}
-    \item The new predictor extends an existing model (Morpho + Radiomics), recalibrated on the new data \cite{cook_quantifying_2018, janssen_updating_2008}.
-    \item The reference score is computed out of fold (pre-validated), so it is not optimistic. 
-    \item For nested models, ``no added information'' is the same null hypothesis for the coefficients, $\Delta$AUC and $\Delta$NetBenefit \cite{pepe_testing_2013}: the coefficients are tested with a likelihood ratio test, and $\Delta$AUC is reported as an effect size.
-    \item Performance is described by discrimination, calibration \cite{alba_discrimination_2017} and decision curves (net benefit).
+    \item The new predictor extends an existing model (morphology + radiomics), recalibrated on the new data \cite{janssen_updating_2008, cook_quantifying_2018}.
+    \item For nested models, ``no added information'' is the same null hypothesis for the coefficients, $\Delta$AUC and $\Delta$net benefit \cite{pepe_testing_2013}: the coefficients are tested with a likelihood ratio test, and $\Delta$AUC is reported as an effect size.
+    \item Performance is described by discrimination, calibration \cite{alba_discrimination_2017} and decision curves (net benefit). \citeneeded{Vickers 2006}
+    \item Reporting standard: TRIPOD+AI \cite{collins_tripodai_2024}.
 \end{itemize}
-
-\subsection{Research questions and hypotheses}
-\textbf{Q1.} Do preoperative hemodynamic features carry predictive information about post-EVAR adverse events beyond the reference radiomic--morphological model?
-
-Formal hypothesis, following \cite{pepe_testing_2013}:
-\begin{align}
-    H_0:&\; P\left(D = 1 \mid S_B, \mathbf{Hd}\right) = P\left(D = 1 \mid S_B\right) \\
-    H_1:&\; \mathbf{Hd} \text{ carries additional information about } D \text{ given } S_B
-\end{align}
-Q2 starts from a limit of $\mathbf{Hd}$: two patients with the same mean TAWSS in the sac have the same $\mathbf{Hd}$,
-even if the spatial distribution of "high TAWSS" is very different.
-Only a representation that keeps the position of the values can separate them, ie, a representation that associates to each point of the domain its velocity/WSS value at each timestep t. 
-
-\textbf{Q2.} Does a "geometry-aware" representation $\mathbf{Z}$ of the same indices, learned by a point-based encoder, carry information beyond $S_B$ and $\mathbf{Hd}$?
-\begin{align}
-    H_0^{(2)}:&\; P\left(D = 1 \mid S_B, \mathbf{Hd}, \mathbf{Z}\right) = P\left(D = 1 \mid S_B, \mathbf{Hd}\right) \\
-    H_1^{(2)}:&\; \mathbf{Z} \text{ carries additional information about } D \text{ given } S_B \text{ and } \mathbf{Hd}
-\end{align}
-Both questions are purely predictive (conditional association), not causal.

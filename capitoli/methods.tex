@@ -1,9 +1,32 @@
+\section{Research questions and hypotheses}
+\label{sec:hypotheses}
+The hypotheses are formulated within the framework of Section~\ref{sec:framework}. $S_B$ denotes the out-of-fold score of the reference model (Section~\ref{sec:reference}), $\mathbf{Hd}$ the set of hemodynamic features (Chapter~\ref{ch:data}) and $D$ the binary outcome.
+
+\textbf{Q1.} Do preoperative hemodynamic features carry predictive information about post-EVAR adverse events beyond the reference radiomic--morphological model?
+
+Formal hypothesis, following \cite{pepe_testing_2013}:
+\begin{align}
+    H_0:&\; P\left(D = 1 \mid S_B, \mathbf{Hd}\right) = P\left(D = 1 \mid S_B\right) \\
+    H_1:&\; \mathbf{Hd} \text{ carries additional information about } D \text{ given } S_B
+\end{align}
+Q2 starts from a limit of $\mathbf{Hd}$: two patients with the same mean TAWSS in the sac have the same $\mathbf{Hd}$,
+even if the spatial distribution of "high TAWSS" is very different.
+Only a representation that keeps the position of the values can separate them, i.e., a representation that associates each wall point with its index values. 
+
+\textbf{Q2.} Does a "geometry-aware" representation $\mathbf{Z}$ of the same indices, learned by a point-based encoder, carry information beyond $S_B$ and $\mathbf{Hd}$?
+\begin{align}
+    H_0^{(2)}:&\; P\left(D = 1 \mid S_B, \mathbf{Hd}, \mathbf{Z}\right) = P\left(D = 1 \mid S_B, \mathbf{Hd}\right) \\
+    H_1^{(2)}:&\; \mathbf{Z} \text{ carries additional information about } D \text{ given } S_B \text{ and } \mathbf{Hd}
+\end{align}
+Both questions are purely predictive (conditional association), not causal.
+
 
 \begin{itemize}
     \item must be fixed before the analysis: outcome (SARA) , $\mathbf{Hd}$ set (TBD) , number of components $k$, models. 
 \end{itemize}
 
 \section{Reference model and score}
+\label{sec:reference}
 \begin{itemize}
     \item Reproduce the benchmark pipeline (Appendix~\ref{app:benchmark}).
     \item Out-of-fold score: 5 stratified folds, $R$ seeds, whole pipeline refitted in each fold. (we use out of fold pz as a sort of pre validation set per model extension)
