@@ -4,7 +4,9 @@
 
 \section{Hemodynamics in abdominal aortic aneurysms}
 \label{sec:hemo-aaa}
+Current clinical guidelines base the management of AAA mainly on static anatomical parameters, above all the maximum diameter of the aneurysm sac \cite{wanhainen_editors_2024}. The diameter, however, is an imperfect marker of risk: some aneurysms rupture below the intervention threshold, while others remain stable above it \cite{varkevisser_midterm_2020}. This has motivated the search for markers that describe the mechanical state of the aneurysm rather than its size alone \cite{polzer_biomechanical_2020}.
 
+Hemodynamics, the study of blood flow and of the forces it exerts on the vessel walls \cite{secomb_hemodynamics_2016}, is one of the main sources of such markers. Hemodynamic quantities can be measured \textit{in vivo}, for instance with phase-contrast MRI \cite{les_quantification_2010}, or computed with computational fluid dynamics (CFD), which solves the Navier--Stokes equations on patient-specific geometries with physiological boundary conditions (BCs) \cite{katsoudas_hemodynamic_2026}. In AAA research, CFD has received increasing attention because it adds functional information to anatomical imaging: from the same CTA scans used in clinical practice, it quantifies flow patterns, pressures, velocities and wall shear stress. These quantities are being investigated as potential markers of disease progression, with possible prognostic value \cite{bonfanti_personalised_nodate}.
 \subsection{Rationale}
 \begin{itemize}
     \item Why flow matters: wall shear stress acts on the endothelium and drives wall remodeling and intraluminal thrombus formation. \citeneeded{}
@@ -76,11 +78,3 @@ All indices are averaged over the cycle \cite{mutlu_integrated_2026, katsoudas_h
     \item Gap 2: regional means lose \emph{where} on the wall the indices are high or low; a point-based encoder can keep this spatial information \cite{qi_pointnet_2017} $\rightarrow$ Q2.
 \end{itemize}
 
-\section{Methodological framework: assessing the added value of a new predictor}
-\label{sec:framework}
-\begin{itemize}
-    \item The new predictor extends an existing model (morphology + radiomics), recalibrated on the new data \cite{janssen_updating_2008, cook_quantifying_2018}.
-    \item For nested models, ``no added information'' is the same null hypothesis for the coefficients, $\Delta$AUC and $\Delta$net benefit \cite{pepe_testing_2013}: the coefficients are tested with a likelihood ratio test, and $\Delta$AUC is reported as an effect size.
-    \item Performance is described by discrimination, calibration \cite{alba_discrimination_2017} and decision curves (net benefit). \citeneeded{Vickers 2006}
-    \item Reporting standard: TRIPOD+AI \cite{collins_tripodai_2024}.
-\end{itemize}
