@@ -1,10 +1,11 @@
-\section{Predicting post-EVAR outcomes}
+
+
+\section{Hemodynamics in AAAs}
 \begin{itemize}
-    \item Models based on morphology and radiomics \cite{peng_predict_2024,kar}. \citeneeded{Karthikesalingam, Wang 2022} None of them uses hemodynamics.
+    \item hemodynamic definition, biomarkers, formulas etc 
+    \item how and why hemodynamics has been introducted in the study of AAAs 
+    \item what kind of relationship has been found between hemodynamic and AAA progression (with or without evar) 
 \end{itemize}
-
-\section{Hemodynamics in AAA and after EVAR}
-
 \subsection{Wall shear stress indices}
 \label{sec:wss-indices}
 Let $\boldsymbol{\tau}_w(\mathbf{x},t)$ be the wall shear stress at wall point $\mathbf{x}$, and $[0,T]$ the last cardiac cycle.
@@ -27,17 +28,21 @@ All indices are averaged over the cycle \cite{mutlu_integrated_2026, katsoudas_h
     \item ECAP: exposure of the wall to low and oscillatory shear, linked to thrombus formation. 
 \end{itemize}
 
+\subsection{links}
+\item Links between WSS indices and thrombus in AAA, as well as AAA growth or rupture \cite{qiu_association_2022, zambrano_association_2022, belkacemi_intraluminal_2023, forneris_ai-powered_2023, kim_deep_2023, rezaeitaleshmahalleh_characterization_2023}.
+    \item Load on the proximal neck and landing zones $\rightarrow$ seal failure (type I endoleak, migration).
+    \item Low and oscillatory flow in the sac $\rightarrow$ thrombus, branch backflow (type II endoleak, sac behaviour). 
+
+\section{Predicting post-EVAR outcomes}
+\begin{itemize}
+    \item Models based on morphology and radiomics \cite{peng_predict_2024,kar}. \citeneeded{Karthikesalingam, Wang 2022} None of them uses hemodynamics.
+    \item peng connected the two dots
+\end{itemize}
+
 \subsection{The role of Hemodynamics in AAA studies}
 Why hemodynamics could be informative for post-EVAR complications:
 \begin{itemize}
-    \item Links between WSS indices and thrombus in AAA, as well as AAA growth or rupture \cite{qiu_association_2022, zambrano_association_2022, belkacemi_intraluminal_2023, forneris_ai-powered_2023, kim_deep_2023, rezaeitaleshmahalleh_characterization_2023}.
-    \item Load on the proximal neck and landing zones $\rightarrow$ seal failure (type I endoleak, migration).
-    \item Low and oscillatory flow in the sac $\rightarrow$ thrombus, branch backflow (type II endoleak, sac behaviour). 
-\end{itemize}
-
-
-\section{Closest work and gap}
-\begin{itemize}
+    
     \item Peng et al.: point-cloud network with morphology, radiomics and CFD; AUC from 0.81 to 0.93. \citeneeded{Peng et al.\ 2026, medRxiv}. they use PointNet++ and obtain a significant inprovement in predictive performance. 
     \item The +0.12 AUC from CFD is mixed with an architecture change (1 vs.\ 3 feature extractors, completely different feature representation). It cannot show that CFD itself improved the prediction.
     \item One test set, no confidence intervals or paired tests: no uncertainty quantification.
@@ -45,7 +50,7 @@ Why hemodynamics could be informative for post-EVAR complications:
     \item Regional means may lose where on the wall the indices are high or low; a point-based encoder can keep this spatial information. \citeneeded{Qi et al.\ 2017, PointNet++}
 \end{itemize}
 
-\section{Assessing Hemodynamic predictive value}
+\section{Metholodical framework: quantify the added value of new biomarkers }
 \label{sec:framework}
 
 \subsection{Testing and evaluating a new predictor}

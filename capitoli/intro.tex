@@ -1,6 +1,6 @@
 \section{Clinical context}
-Abdominal aortic aneurysm (AAA) is a localized dilatation of the abdominal aorta, most commonly in its infrarenal segment. The aorta is considered aneurysmal when its diameter exceeds 3~cm or is at least 1.5 times the normal diameter \cite{sakalihasan_abdominal_2018, katsoudas_hemodynamic_2026}. If left untreated, AAA carries a high mortality risk due to the possibility of rupture, and endovascular or open surgical repair is often indicated to mitigate this risk. Endovascular aneurysm repair (EVAR) is often preferred because it is minimally invasive \cite{braak_scoping_2026, wanhainen_editors_2024}. However, post-procedural complications are common, with an estimated incidence of 18--30\%, and frequently require re-intervention \cite{daye_complications_2018}. 
-Accurate prediction of post-EVAR adverse events (AEs) can support clinicians in determining whether post-EVAR surveillance should be intensified or reduced\cite{peng_endoleak_2026} \citeneeded{Miura}.
+Abdominal aortic aneurysm (AAA) is a localized dilatation of the abdominal aorta, most commonly in its infrarenal segment. The aorta is considered aneurysmal when its diameter exceeds 3~cm or is at least 1.5 times the normal diameter \cite{sakalihasan_abdominal_2018, katsoudas_hemodynamic_2026}. If left untreated, AAA carries a high mortality risk due to the possibility of rupture and open or endovascular repair is recommended when the diameter reaches 5.5~cm in men or 5.0~cm in women, when the aneurysm grows rapidly, or when it becomes symptomatic, while smaller aneurysms are monitored with periodic imaging \cite{wanhainen_editors_2024}. EVAR is often preferred because it is minimally invasive and is associated with lower perioperative mortality, although this early survival advantage is not maintained in the long term \cite{braak_scoping_2026, wanhainen_editors_2024}. In fact, post-procedural complications are common, with an estimated incidence of 18--30\%, and frequently require re-intervention \cite{daye_complications_2018}. 
+For this reason, patients treated with EVAR undergo lifelong imaging surveillance, which is costly and exposes them to repeated radiation and iodinated contrast agents \cite{wanhainen_editors_2024}. Accurate prediction of adverse events (AEs) after EVAR could help clinicians decide whether surveillance should be intensified or reduced for individual patients \cite{peng_endoleak_2026, miura_initial_2024}
 
 \section{Post-EVAR adverse events}
 To discuss with clinicians. out of the list, what do we consider as outcome for the model?
@@ -8,19 +8,26 @@ in this paragraph, should i outline the main complications (endoleaks) and other
 
 
 \section{Research question and objectives}
-Assessing the risk of complications after EVAR remains challenging. Risk scores and methods developed for open repair do not account for the anatomical factors that are crucial in endovascular repair. Tools developed specifically for post-EVAR complications show limited predictive performance, largely because of how they were built: they are often developed, trained and tested on small, single-center datasets without consistent external validation, which limits their generalizability and clinical applicability \cite{braak_scoping_2026} \citeneeded{Systematic lijftekot}.
-In recent years, machine learning (ML) methods have been widely explored for this purpose. They can handle high-dimensional clinical data and capture non-linear relationships, two properties considered crucial for modeling EVAR-specific risk profiles \cite{braak_scoping_2026, collins_tripodai_2024}.}
+Assessing the risk of complications after EVAR remains challenging. Risk scores and methods developed for open repair do not account for the anatomical factors that are crucial in endovascular repair. 
+Machine learning (ML) methods have therefore been widely explored for post-EVAR risk prediction, as they can handle high-dimensional clinical and imaging data and capture non-linear relationships \cite{braak_scoping_2026, collins_tripodai_2024}.
+However, ML-based tools developed specifically for post-EVAR complications still show limited predictive performance. Two limitations recur. First, most models are developed and tested on small, single-center datasets without consistent external validation, which limits their generalizability and clinical applicability\cite {lijftogt_systematic_2017}. Second, they rely mainly on static descriptors extracted from CTA, namely aortic morphology and radiomic features, which characterize the shape and tissue composition of the aneurysm but not the flow conditions and mechanical loads acting on the vessel wall and the endograft.\cite{braak_scoping_2026, karthikesalingam_artificial_2015, long_applying_2024, li_machine_2023}. For this reason, research in this field is directed towards the exploration of computational and mathematical methods able to provide a more holistic and case-specific image of the patients' conditions. One of the most promising area of research is that of computational fluid dynamic (CFD) models, which provide quantitative descriptions of the blood flow patterns \cite{katsoudas_hemodynamic_2026, mutlu_how_2023}.  
+Indeed, hemodynamic indicators have shown promising in predicting AAA growth  \cite{kim_deep_2023, rezaeitaleshmahalleh_characterization_2023, joly_cohort_2020, fedotova_association_2025}, but their relationship with outcomes after EVAR has received little attention. This thesis aims to investigate and quantify the added value of CFD-derived hemodynamic indicators in predicting post-EVAR complications. Specifically, it addresses the following question:
+\begin{quote}
+\emph{Do CFD-derived hemodynamic indicators improve the prediction of post-EVAR complications compared with models based on morphological and radiomic features alone?}
+\end{quote}
 
-(Objective and hypotheses as in TRIPOD+AI) \cite{collins_tripodai_2024}.
-\begin{itemize}
-    \item \textbf{Primary question (Q1).} Does preoperative CFD, represented as regional features, add predictive value beyond the reference radiomic--morphological model? 
-    \item \textbf{Second question (Q2).} Does a geometry-based representation of the hemodynamic fields, learned with a point-based encoder, add information beyond the regional features?
-    \item \textbf{Formal hypotheses:} Section~\ref{sec:framework}
-\end{itemize}
-
+To answer this question, the thesis pursues the following objectives:
+\begin{enumerate}
+    \item to develop a pipeline that extracts morphological, radiomic and hemodynamic features from pre-operative CTA scans; 
+    \item to train and compare predictive models built on each feature domain and on their combination;
+    \item to quantify the contribution of hemodynamic indicators to predictive performance and identify the features most associated with adverse outcomes;
+\end{enumerate}
 \section{Outline}
-Chapter~\ref{ch:background}: background and related work.
-Chapter~\ref{ch:data}: cohort, CFD pipeline and features.
-Chapter~\ref{ch:methods}: protocol and analyses.
-Chapter~\ref{ch:results}: results and discussion.
-Chapter~\ref{ch:conclusion}: conclusion.
+\begin{enumerate}
+    \item Chapter~\ref{ch:background}: background and related work.
+    \item Chapter~\ref{ch:data}: cohort, CFD pipeline and features.
+    \item Chapter~\ref{ch:methods}: protocol and analyses.
+    \item Chapter~\ref{ch:results}: results and discussion.
+    \item Chapter~\ref{ch:conclusion}: conclusion.
+\end{enumerate}
+
